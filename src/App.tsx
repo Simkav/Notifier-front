@@ -1,11 +1,14 @@
+import Header from "./features/Header";
 import React from 'react';
-import './App.scss';
+import css from './index.module.scss';
 
-function App() {
-  return (
-    <div >
-    </div>
-  );
+const App = () => {
+    return (
+        <div className={css.container}>
+
+            <Header/>
+        </div>
+    );
 }
 
 export default App;

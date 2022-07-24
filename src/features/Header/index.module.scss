@@ -1,0 +1,22 @@
+@import "../../index";
+
+.container {
+  height: 80px;
+  width: 100vw;
+  background-color: $background-color;
+  border-bottom: 1px solid $border-color;
+  display: flex;
+  color: lightgrey;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.name {
+  font-size: 40px;
+
+}
+
+.icon {
+  cursor: pointer;
+  margin: 30px;
+}
