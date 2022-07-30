@@ -1,9 +1,9 @@
 export const textStyle = {
   my: 3,
-  width: 500,
+  width: '80%',
 };
 export const buttonStyle = {
-  width : 300
+  width : "50%"
 }
 
 export const formVariations = {
