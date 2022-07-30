@@ -1,0 +1,14 @@
+@import "src/index.scss";
+
+.container {
+  margin-top: 20px;
+}
+
+.formWidth {
+  width: 600px;
+}
+
+.container,
+.formWidth {
+  @include flex-column;
+}

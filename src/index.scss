@@ -13,3 +13,12 @@
 $primary-color: #66b2ff;
 $background-color: #0a1929;
 $border-color: #233b56;
+
+//mixins
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

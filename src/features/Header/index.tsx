@@ -30,7 +30,7 @@ const Header = () => {
         </a>
       </Tooltip>
       <Tooltip TransitionComponent={Fade} title="Go to Main page">
-        <div className={style.name} onClick={() => handleClick("")}>
+        <div className={style.name} onClick={() => handleClick("main")}>
           Notifier
         </div>
       </Tooltip>
@@ -38,7 +38,7 @@ const Header = () => {
         <AccountBoxIcon
           className={style.icon}
           fontSize="large"
-          onClick={() => handleClick("auth")}
+          onClick={() => handleClick("userActions")}
           sx={{ color: "#66b2ff" }}
         />
       </Tooltip>
