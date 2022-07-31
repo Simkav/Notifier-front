@@ -16,6 +16,7 @@
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@types/react-router-dom": "^5.3.3",
+    "axios": "^0.27.2",
     "clean-webpack-plugin": "^4.0.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.5.0",
