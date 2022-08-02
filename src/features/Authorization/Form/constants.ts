@@ -8,7 +8,7 @@ export const formNames = {
   [formVariations.registration]: "Register",
 };
 
-export const showRepeat = {
+export const isRegistration = {
   [formVariations.authorization]: false,
   [formVariations.registration]: true,
 };

@@ -1,25 +1,45 @@
 import * as Yup from "yup";
 import { userFields } from "../types";
 
-export const validationSchema = Yup.object().shape({
-  [userFields.email]: Yup.string()
-    .required()
-    .email()
-    .nullable()
-    .min(6, "Must be at least 6 characters long"),
-  [userFields.password]: Yup.string()
-    .required()
-    .nullable()
-    .min(6, "Must be at least 6 characters long"),
+export const authValidationSchema = Yup.object()
+  .shape({
+    [userFields.email]: Yup.string()
+      .nullable()
+      .required("Email is required")
+      .email("Enter correct email")
+      .min(6, "Must be at least 6 characters long"),
+    [userFields.password]: Yup.string()
+      .nullable()
+      .required("Password is required")
+      .min(6, "Must be at least 6 characters long")
+      .matches(
+        /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]/,
+        "Must Contain One Uppercase, One Lowercase, One Number character"
+      ),
+  })
+  .defined();
+
+export const registerValidationSchema = authValidationSchema.clone().shape({
   [userFields.repeatPassword]: Yup.string()
-    .required()
     .nullable()
-    .min(6, "Must be at least 6 characters long")
-    .optional(),
+    .required("Repeated your password")
+    .test(
+      "passwords equal",
+      "Repeated password is not equal to password",
+      function test(value) {
+        console.log(value, this.parent);
+
+        return value === this.parent["password"];
+      }
+    ),
 });
 
-export const initialValues = {
-  email: '',
-  password: '',
-  repeatPassword: '',
+export type AnalyticalReportsValues = Yup.InferType<
+  typeof registerValidationSchema
+>;
+
+export const initialValues: AnalyticalReportsValues = {
+  email: "",
+  password: "",
+  repeatPassword: "",
 };

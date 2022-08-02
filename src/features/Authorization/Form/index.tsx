@@ -4,10 +4,14 @@ import { Button } from "@mui/material";
 import { Formik, FormikValues } from "formik";
 import { TextFieldAdapter } from "../../ComponentAdapters/TextFieldAdapter";
 import { authEnum, userFields } from "../types";
+import {
+  authValidationSchema,
+  initialValues,
+  registerValidationSchema,
+} from "./validation";
 import { buttonStyle } from "../../ComponentAdapters/mui.styles";
-import { formNames, showRepeat } from "./constants";
+import { formNames, isRegistration } from "./constants";
 import { handlAuth } from "../utils";
-import { initialValues,validationSchema } from "./validation";
 
 type Props = {
   whichForm: authEnum;
@@ -16,19 +20,22 @@ type Props = {
 export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
   const handleSubmit = (values: FormikValues) => {
     handlAuth(values, whichForm);
-    console.log(values)
-
   };
 
   return (
     <div className={css.container}>
       <div className={css.formWidth}>
         <Formik
+          validateOnBlur
           initialValues={initialValues}
           onSubmit={handleSubmit}
-          validationSchema={validationSchema}
+          validationSchema={
+            isRegistration[whichForm]
+              ? registerValidationSchema
+              : authValidationSchema
+          }
         >
-          {({handleSubmit }) => (
+          {({ handleSubmit, isValid, values }) => (
             <>
               <TextFieldAdapter
                 id={userFields.email}
@@ -42,7 +49,7 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
                 name={userFields.password}
                 type="password"
               />
-              {showRepeat[whichForm] && (
+              {isRegistration[whichForm] && (
                 <TextFieldAdapter
                   id={userFields.repeatPassword}
                   label={"Repeat Password"}
@@ -52,6 +59,13 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
               )}
               <Button
                 disableElevation
+                disabled={
+                  (isRegistration[whichForm]
+                    ? !!values.email && !!values.password
+                    : !!values.email &&
+                      !!values.password &&
+                      !!values.repeatPassword) || !isValid
+                }
                 onClick={() => handleSubmit()}
                 sx={buttonStyle}
                 type="submit"
