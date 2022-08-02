@@ -1,44 +1,67 @@
 import React, { FC } from "react";
-import TextField from "@mui/material/TextField";
 import css from "./index.module.scss";
 import { Button } from "@mui/material";
-import { Formik } from "formik";
-import { buttonStyle, formNames, showRepeat, textStyle } from "./constants";
-import { handleSubmit } from "../utils";
+import { Formik, FormikValues } from "formik";
+import { TextFieldAdapter } from "../../ComponentAdapters/TextFieldAdapter";
+import { authEnum, userFields } from "../types";
+import { buttonStyle } from "../../ComponentAdapters/mui.styles";
+import { formNames, showRepeat } from "./constants";
+import { handlAuth } from "../utils";
+import { initialValues,validationSchema } from "./validation";
 
 type Props = {
-  whichForm: string;
+  whichForm: authEnum;
 };
 
 export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
+  const handleSubmit = (values: FormikValues) => {
+    handlAuth(values, whichForm);
+    console.log(values)
+
+  };
+
   return (
     <div className={css.container}>
       <div className={css.formWidth}>
-        <TextField id="login" label="Login" sx={textStyle} variant="filled" />
-        <TextField
-          id="password"
-          label="Password"
-          sx={textStyle}
-          type="password"
-          variant="filled"
-        />
-        {showRepeat[whichForm] && (
-          <TextField
-            id="repeat"
-            label="Repeat Password"
-            sx={textStyle}
-            type="password"
-            variant="filled"
-          />
-        )}
-        <Button
-          disableElevation
-          // onClick={handleSubmit(values, whichForm)}
-          sx={buttonStyle}
-          variant="outlined"
+        <Formik
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
         >
-          {formNames[whichForm]}
-        </Button>
+          {({handleSubmit }) => (
+            <>
+              <TextFieldAdapter
+                id={userFields.email}
+                label={"Email"}
+                name={userFields.email}
+              />
+
+              <TextFieldAdapter
+                id={userFields.password}
+                label={"Password"}
+                name={userFields.password}
+                type="password"
+              />
+              {showRepeat[whichForm] && (
+                <TextFieldAdapter
+                  id={userFields.repeatPassword}
+                  label={"Repeat Password"}
+                  name={userFields.repeatPassword}
+                  type="password"
+                />
+              )}
+              <Button
+                disableElevation
+                onClick={() => handleSubmit()}
+                sx={buttonStyle}
+                type="submit"
+                variant="outlined"
+              >
+                {formNames[whichForm]}
+              </Button>
+            </>
+          )}
+        </Formik>
       </div>
     </div>
   );
