@@ -1,21 +1,22 @@
 import React from "react";
 import axios from "axios";
-import { userEnum, userType } from "./types";
+import { FormikValues } from "formik";
+import { authEnum } from "./types";
 
-export const handleSubmit = (values: userType, action: userEnum) => {
-  const { userEmail, userPassword } = values;
-console.log(123)
+export const handlAuth = (values: FormikValues, action: authEnum) => {
+  const { email, password } = values;
+
   const authorizationUrl = new URL(
     action === "authorization"
       ? process.env.REACT_APP_SIGN_IN_URL!
-      : process.env.REACT_APP_SIGN_IN_URL!
+      : process.env.REACT_APP_REGISTER_URL!
   ).href;
 
   axios
     .post(authorizationUrl, {
-      email: userEmail,
-      password: userPassword,
+      email: email,
+      password: password,
     })
-    .then((response) => <div>ok</div>)
-    .catch((error) => <div>error</div>);
+    .then((response) => "ok")
+    .catch((error) => " error");
 };

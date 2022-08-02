@@ -1,15 +1,14 @@
 import React, { FC, SyntheticEvent, useState } from "react";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import axios from "axios";
 import css from "./index.module.scss";
 import { AuthorizationForm } from "./Form";
-import { userActions } from "./types";
+import { authEnum } from "./types";
 
 const Authorization: FC = () => {
-  const [value, setValue] = useState(userActions.authorization);
+  const [value, setValue] = useState<authEnum>(authEnum.authorization);
 
-  const handleChange = (event: SyntheticEvent, newValue: string) => {
+  const handleChange = (event: SyntheticEvent, newValue: authEnum) => {
     setValue(newValue);
   };
 
@@ -22,14 +21,8 @@ const Authorization: FC = () => {
         textColor="primary"
         value={value}
       >
-        <Tab
-          label={userActions.authorization}
-          value={userActions.authorization}
-        />
-        <Tab
-          label={userActions.registration}
-          value={userActions.registration}
-        />
+        <Tab label={authEnum.authorization} value={authEnum.authorization} />
+        <Tab label={authEnum.registration} value={authEnum.registration} />
       </Tabs>
       <AuthorizationForm whichForm={value} />
     </>

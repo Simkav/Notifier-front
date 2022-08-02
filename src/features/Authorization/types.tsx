@@ -1,15 +1,16 @@
-export enum userEnum {
+export enum authEnum {
   authorization = "authorization",
   registration = "registration",
 }
-
-export const userActions = {
-  authorization: "authorization",
-  registration: "registration",
-};
-
-export interface userType  {
-  userEmail: string;
-  userPassword: string;
-  userRepeatPassword?: string;
+export interface userType {
+  email: string;
+  password: string;
+  repeatPassword?: string;
 }
+
+export enum userFields {
+  email = "email",
+  password = "password",
+  repeatPassword = "repeatPassword",
+}
+

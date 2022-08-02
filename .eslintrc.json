@@ -30,6 +30,7 @@
     "newline-before-return": "error",
     "prefer-const": "warn",
     "sort-vars": "error",
+    "react/prop-types": "off",
     "sort-keys": [
       "error",
       "asc",
