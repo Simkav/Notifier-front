@@ -12,6 +12,7 @@ import {
 import { buttonStyle } from "../../ComponentAdapters/mui.styles";
 import { formNames, isRegistration } from "./constants";
 import { handlAuth } from "../utils";
+import { isDisabledButton } from "./utils";
 
 type Props = {
   whichForm: authEnum;
@@ -26,7 +27,6 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
     <div className={css.container}>
       <div className={css.formWidth}>
         <Formik
-          validateOnBlur
           initialValues={initialValues}
           onSubmit={handleSubmit}
           validationSchema={
@@ -59,14 +59,10 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
               )}
               <Button
                 disableElevation
-                disabled={
-                  (isRegistration[whichForm]
-                    ? !!values.email && !!values.password
-                    : !!values.email &&
-                      !!values.password &&
-                      !!values.repeatPassword) || !isValid
+                disabled={isDisabledButton(values, whichForm) || !isValid}
+                onClick={() =>
+                  handleSubmit()
                 }
-                onClick={() => handleSubmit()}
                 sx={buttonStyle}
                 type="submit"
                 variant="outlined"
