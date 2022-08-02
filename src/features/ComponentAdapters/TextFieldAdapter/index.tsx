@@ -2,14 +2,13 @@ import React from "react";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { BaseAdapterProps } from "../type";
 import { Field, FieldProps } from "formik";
-import { defaultErrorMessage } from "./constants";
 import { textStyle } from "../mui.styles";
 
-type Optins = {
+type Options = {
   errorMessage?: string;
 };
 
-type Props = Optins & BaseAdapterProps & TextFieldProps;
+type Props = Options & BaseAdapterProps & TextFieldProps;
 
 type ComponentProps = Props & FieldProps;
 
@@ -24,15 +23,13 @@ const TextFieldComponent = React.memo<ComponentProps>((props) => {
     field,
     ...rest
   } = props;
-
-  const errorText = defaultErrorMessage[field.name] ?? errorMessage;
-
+  
   return (
     <>
       <TextField
         error={!!(errors[field.name] && touched[field.name])}
         helperText={
-          !!(errors[field.name] && touched[field.name]) ? errorText : ""
+          !!(errors[field.name] && touched[field.name]) ? (errors[field.name] as string)  : ""
         }
         id={id}
         label={label}
