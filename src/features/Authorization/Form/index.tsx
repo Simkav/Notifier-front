@@ -11,17 +11,22 @@ import {
 } from "./validation";
 import { buttonStyle } from "../../ComponentAdapters/mui.styles";
 import { formNames, isRegistration } from "./constants";
-import { handlAuth } from "../utils";
+import { handleAuth } from "../utils";
 import { isDisabledButton } from "./utils";
+import { useAppDispatch } from "../../../service/store";
 
 type Props = {
   whichForm: authEnum;
 };
 
 export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
+  const dispatch = useAppDispatch();
+
   const handleSubmit = (values: FormikValues) => {
-    handlAuth(values, whichForm);
+   handleAuth(values, whichForm, dispatch)
   };
+
+  // TODO set untouched try
 
   return (
     <div className={css.container}>
@@ -42,7 +47,6 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
                 label={"Email"}
                 name={userFields.email}
               />
-
               <TextFieldAdapter
                 id={userFields.password}
                 label={"Password"}
@@ -60,9 +64,7 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
               <Button
                 disableElevation
                 disabled={isDisabledButton(values, whichForm) || !isValid}
-                onClick={() =>
-                  handleSubmit()
-                }
+                onClick={() => handleSubmit()}
                 sx={buttonStyle}
                 type="submit"
                 variant="outlined"

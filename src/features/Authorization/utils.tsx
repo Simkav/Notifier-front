@@ -1,9 +1,15 @@
 import React from "react";
 import axios from "axios";
+import { DispatchState } from "../../service/store";
 import { FormikValues } from "formik";
 import { authEnum } from "./types";
+import { setCurrentUser } from "../../service/slices/currentUser/currentUser.slice";
 
-export const handlAuth = (values: FormikValues, action: authEnum) => {
+export const handleAuth = (
+  values: FormikValues,
+  action: authEnum,
+  dispatch: DispatchState
+) => {
   const { email, password } = values;
 
   const authorizationUrl = new URL(
@@ -17,6 +23,14 @@ export const handlAuth = (values: FormikValues, action: authEnum) => {
       email: email,
       password: password,
     })
-    .then((response) => "ok")
+    .then((response) => {
+      const userData = response.data;
+      dispatch(
+        setCurrentUser({
+          userEmail: userData.user.email,
+          jwt: userData.tokens.access_token,
+        })
+      );
+    })
     .catch((error) => " error");
 };
