@@ -3,7 +3,10 @@ import axios from "axios";
 import { DispatchState } from "../../service/store";
 import { FormikValues } from "formik";
 import { authEnum } from "./types";
-import { setCurrentUser } from "../../service/slices/currentUser/currentUser.slice";
+import {
+  setCurrentUser,
+  setCurrentUserError,
+} from "../../service/slices/currentUser/currentUser.slice";
 
 export const handleAuth = (
   values: FormikValues,
@@ -32,5 +35,12 @@ export const handleAuth = (
         })
       );
     })
-    .catch((error) => " error");
+    .catch((error) =>
+      dispatch(
+        setCurrentUserError({
+          code: error.message,
+          message: error.response.data.message,
+        })
+      )
+    );
 };

@@ -38,7 +38,7 @@ const Header = () => {
         <AccountBoxIcon
           className={style.icon}
           fontSize="large"
-          onClick={() => handleClick("userActions")}
+          onClick={() => handleClick("user/auth")}
           sx={{ color: "#66b2ff" }}
         />
       </Tooltip>

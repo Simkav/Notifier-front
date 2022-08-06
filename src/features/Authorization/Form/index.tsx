@@ -1,6 +1,8 @@
-import React, { FC } from "react";
+import AlertAdapter from "../../ComponentAdapters/AlertAdapter";
+import React, { FC, useState } from "react";
 import css from "./index.module.scss";
 import { Button } from "@mui/material";
+import { ErrorType } from "../../../service/types";
 import { Formik, FormikValues } from "formik";
 import { TextFieldAdapter } from "../../ComponentAdapters/TextFieldAdapter";
 import { authEnum, userFields } from "../types";
@@ -13,7 +15,8 @@ import { buttonStyle } from "../../ComponentAdapters/mui.styles";
 import { formNames, isRegistration } from "./constants";
 import { handleAuth } from "../utils";
 import { isDisabledButton } from "./utils";
-import { useAppDispatch } from "../../../service/store";
+import { useAppDispatch, useAppSelector } from "../../../service/store";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   whichForm: authEnum;
@@ -22,11 +25,22 @@ type Props = {
 export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
   const dispatch = useAppDispatch();
 
-  const handleSubmit = (values: FormikValues) => {
-   handleAuth(values, whichForm, dispatch)
-  };
+  const [isOpenModal, setOpenModal] = useState(false);
 
-  // TODO set untouched try
+  const navigate = useNavigate();
+
+  const currentUserError: ErrorType = useAppSelector(
+    (state) => state.currentUserReducer.error
+  );
+  // проверка на то,пришел ли ответ запроса,только после этого перенаправляем
+  const handleSubmit = async (values: FormikValues) => {
+    await handleAuth(values, whichForm, dispatch);
+    setOpenModal(!isOpenModal);
+    // разделить маил до @
+    if (!currentUserError.message && currentUserError.code === "200") {
+      navigate(`/user/${values.email}`);
+    }
+  };
 
   return (
     <div className={css.container}>
@@ -75,6 +89,12 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
           )}
         </Formik>
       </div>
+      <AlertAdapter
+        error={currentUserError}
+        message="Вы успешно вошли!"
+        open={isOpenModal}
+        setOpenModal={setOpenModal}
+      />
     </div>
   );
 };
