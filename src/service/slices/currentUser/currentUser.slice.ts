@@ -17,6 +17,7 @@ const currentUserSlice = createSlice({
     setCurrentUserError: (state, action) => {
       state.error.code = action.payload.code;
       state.error.message = action.payload.message;
+
     },
   },
 });

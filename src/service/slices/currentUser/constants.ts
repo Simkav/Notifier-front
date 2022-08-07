@@ -12,6 +12,7 @@ export const initialState: userType = {
   error: {
     code: null,
     message: null,
+    status: null,
   },
   jwt: null,
 };

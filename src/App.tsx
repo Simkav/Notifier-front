@@ -1,6 +1,7 @@
 import Authorization from "./features/Authorization";
 import Header from "./features/Header";
 import React from "react";
+import UserConnections from "./features/UserConnections";
 import css from "./index.module.scss";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -25,6 +26,7 @@ const App = () => {
             <Routes>
               <Route element={<Navigate replace to="/main" />} path="/" />
               <Route element={<Authorization />} path="/user/auth" />
+              <Route element={<UserConnections />} path="/user/:login" />
               <Route element={<p>Main</p>} path="/main" />
               <Route element={<div>404</div>} path="*" />
             </Routes>

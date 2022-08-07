@@ -4,6 +4,8 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import React, { useCallback } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import style from "./index.module.scss";
+import { ErrorType } from "../../service/types";
+import { useAppSelector } from "../../service/store";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
@@ -16,6 +18,10 @@ const Header = () => {
     [navigate]
   );
   // TODO - make custom tooltip, separate components
+
+  const currentUserMail = useAppSelector(
+    (state) => state.currentUserReducer?.userEmail
+  );
 
   return (
     <div className={style.container}>
@@ -38,7 +44,7 @@ const Header = () => {
         <AccountBoxIcon
           className={style.icon}
           fontSize="large"
-          onClick={() => handleClick("user/auth")}
+          onClick={() => handleClick(currentUserMail ? `user/${currentUserMail}` : "user/auth")}
           sx={{ color: "#66b2ff" }}
         />
       </Tooltip>

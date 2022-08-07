@@ -34,11 +34,12 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
   );
   // проверка на то,пришел ли ответ запроса,только после этого перенаправляем
   const handleSubmit = async (values: FormikValues) => {
-    await handleAuth(values, whichForm, dispatch);
+    console.log(await handleAuth(values, whichForm, dispatch));
     setOpenModal(!isOpenModal);
-    // разделить маил до @
-    if (!currentUserError.message && currentUserError.code === "200") {
-      navigate(`/user/${values.email}`);
+
+    console.log(currentUserError?.status);
+    if (currentUserError?.status == 200) {
+      navigate(`/user/${values.email.split("@")[0]}`);
     }
   };
 
@@ -90,8 +91,8 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
         </Formik>
       </div>
       <AlertAdapter
+        alertMessage="Вы успешно вошли!"
         error={currentUserError}
-        message="Вы успешно вошли!"
         open={isOpenModal}
         setOpenModal={setOpenModal}
       />
