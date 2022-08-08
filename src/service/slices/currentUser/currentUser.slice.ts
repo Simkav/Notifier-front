@@ -41,7 +41,7 @@ const currentUserSlice = createSlice({
     });
   },
 });
-
+//TODO разобраться с extraReducers
 export const { setCurrentUser, setCurrentUserError, dropCurrentUser } =
   currentUserSlice.actions;
 
