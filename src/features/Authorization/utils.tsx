@@ -8,7 +8,7 @@ import {
   setCurrentUserError,
 } from "../../service/slices/currentUser/currentUser.slice";
 
-export const handleAuth = async (
+export const handleAuth = (
   values: FormikValues,
   action: authEnum,
   dispatch: DispatchState
@@ -21,13 +21,12 @@ export const handleAuth = async (
       : process.env.REACT_APP_REGISTER_URL!
   ).href;
 
-   await axios
+  axios
     .post(authorizationUrl, {
       email: email,
       password: password,
     })
     .then((response) => {
-      console.log(response);
       const userData = response.data;
       dispatch(
         setCurrentUser({

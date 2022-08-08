@@ -12,6 +12,7 @@ import {
   registerValidationSchema,
 } from "./validation";
 import { buttonStyle } from "../../ComponentAdapters/mui.styles";
+import { fetchUser } from "../../../service/slices/currentUser/currentUser.async";
 import { formNames, isRegistration } from "./constants";
 import { handleAuth } from "../utils";
 import { isDisabledButton } from "./utils";
@@ -34,7 +35,7 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
   );
   // проверка на то,пришел ли ответ запроса,только после этого перенаправляем
   const handleSubmit = async (values: FormikValues) => {
-    console.log(await handleAuth(values, whichForm, dispatch));
+    await dispatch(fetchUser({ currentUser: values, whichForm }));
     setOpenModal(!isOpenModal);
 
     console.log(currentUserError?.status);

@@ -5,3 +5,10 @@ export type ErrorType = {
   message: Maybe<string>;
   status: Maybe<number>;
 };
+
+export type requestType = {
+  codeMessage: Maybe<string>;
+  message: Maybe<string>;
+  status: Maybe<number>;
+  pending: Maybe<boolean>;
+}
