@@ -1,6 +1,8 @@
-import React, { FC } from "react";
+import AlertAdapter from "../../ComponentAdapters/AlertAdapter";
+import React, { FC, useState } from "react";
 import css from "./index.module.scss";
 import { Button } from "@mui/material";
+import { ErrorType } from "../../../service/types";
 import { Formik, FormikValues } from "formik";
 import { TextFieldAdapter } from "../../ComponentAdapters/TextFieldAdapter";
 import { authEnum, userFields } from "../types";
@@ -10,17 +12,36 @@ import {
   registerValidationSchema,
 } from "./validation";
 import { buttonStyle } from "../../ComponentAdapters/mui.styles";
+import { fetchUser } from "../../../service/slices/currentUser/currentUser.async";
 import { formNames, isRegistration } from "./constants";
-import { handlAuth } from "../utils";
+import { handleAuth } from "../utils";
 import { isDisabledButton } from "./utils";
+import { useAppDispatch, useAppSelector } from "../../../service/store";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   whichForm: authEnum;
 };
 
 export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
-  const handleSubmit = (values: FormikValues) => {
-    handlAuth(values, whichForm);
+  const dispatch = useAppDispatch();
+
+  const [isOpenModal, setOpenModal] = useState(false);
+
+  const navigate = useNavigate();
+
+  const currentUserError: ErrorType = useAppSelector(
+    (state) => state.currentUserReducer.error
+  );
+  // проверка на то,пришел ли ответ запроса,только после этого перенаправляем
+  const handleSubmit = async (values: FormikValues) => {
+    await dispatch(fetchUser({ currentUser: values, whichForm }));
+    setOpenModal(!isOpenModal);
+
+    console.log(currentUserError?.status);
+    if (currentUserError?.status == 200) {
+      navigate(`/user/${values.email.split("@")[0]}`);
+    }
   };
 
   return (
@@ -42,7 +63,6 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
                 label={"Email"}
                 name={userFields.email}
               />
-
               <TextFieldAdapter
                 id={userFields.password}
                 label={"Password"}
@@ -60,9 +80,7 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
               <Button
                 disableElevation
                 disabled={isDisabledButton(values, whichForm) || !isValid}
-                onClick={() =>
-                  handleSubmit()
-                }
+                onClick={() => handleSubmit()}
                 sx={buttonStyle}
                 type="submit"
                 variant="outlined"
@@ -73,6 +91,12 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
           )}
         </Formik>
       </div>
+      <AlertAdapter
+        alertMessage="Вы успешно вошли!"
+        error={currentUserError}
+        open={isOpenModal}
+        setOpenModal={setOpenModal}
+      />
     </div>
   );
 };

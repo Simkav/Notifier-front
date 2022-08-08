@@ -5,7 +5,7 @@ import { Field, FieldProps } from "formik";
 import { textStyle } from "../mui.styles";
 
 type Options = {
-  errorMessage?: string;
+  message?: string;
 };
 
 type Props = Options & BaseAdapterProps & TextFieldProps;
@@ -19,7 +19,7 @@ const TextFieldComponent = React.memo<ComponentProps>((props) => {
     type,
     form: { errors, touched },
     error = false,
-    errorMessage = "Required field",
+    message = "Required field",
     field,
     ...rest
   } = props;
