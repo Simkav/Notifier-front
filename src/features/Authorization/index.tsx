@@ -3,12 +3,12 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import css from "./index.module.scss";
 import { AuthorizationForm } from "./Form";
-import { authEnum } from "./types";
+import { formEnum } from "./types";
 
 const Authorization: FC = () => {
-  const [value, setValue] = useState<authEnum>(authEnum.authorization);
+  const [value, setValue] = useState<formEnum>(formEnum.authorization);
 
-  const handleChange = (event: SyntheticEvent, newValue: authEnum) => {
+  const handleChange = (event: SyntheticEvent, newValue: formEnum) => {
     setValue(newValue);
   };
 
@@ -21,10 +21,10 @@ const Authorization: FC = () => {
         textColor="primary"
         value={value}
       >
-        <Tab label={authEnum.authorization} value={authEnum.authorization} />
-        <Tab label={authEnum.registration} value={authEnum.registration} />
+        <Tab label={formEnum.authorization} value={formEnum.authorization} />
+        <Tab label={formEnum.registration} value={formEnum.registration} />
       </Tabs>
-      <AuthorizationForm whichForm={value} />
+      <AuthorizationForm formType={value} />
     </>
   );
 };

@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { DispatchState } from "../../service/store";
 import { FormikValues } from "formik";
-import { authEnum } from "./types";
+import { formEnum } from "./types";
 import {
   setCurrentUser,
   setCurrentUserError,
@@ -10,7 +10,7 @@ import {
 
 export const handleAuth = (
   values: FormikValues,
-  action: authEnum,
+  action: formEnum,
   dispatch: DispatchState
 ) => {
   const { email, password } = values;

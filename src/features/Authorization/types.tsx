@@ -1,4 +1,4 @@
-export enum authEnum {
+export enum formEnum {
   authorization = "authorization",
   registration = "registration",
 }

@@ -16,8 +16,8 @@ const currentUserSlice = createSlice({
     dropCurrentUser: () => initialState,
 
     setCurrentUserError: (state, action) => {
-      state.error.code = action.payload.code;
-      state.error.message = action.payload.message;
+      state.request.codeMessage = action.payload.code;
+      state.request.message = action.payload.message;
     },
   },
   extraReducers: (builder) => {
@@ -30,9 +30,9 @@ const currentUserSlice = createSlice({
       state.request.pending = false;
       state.request.codeMessage = action.error.code;
       state.request.message = action.error.message;
+      state.request.status = 400;
     });
     builder.addCase(fetchUser.fulfilled, (state, action) => {
-      console.log(state, action);
 
       state.request.pending = false;
       state.userEmail = action.payload.userEmail;
@@ -41,7 +41,6 @@ const currentUserSlice = createSlice({
     });
   },
 });
-//TODO разобраться с extraReducers
 export const { setCurrentUser, setCurrentUserError, dropCurrentUser } =
   currentUserSlice.actions;
 
@@ -52,7 +51,7 @@ export const getjwt = (state: RootState) => state.currentUserReducer.jwt;
 export const getCurrentUser = (state: RootState) =>
   state.currentUserReducer.userEmail;
 
-export const getCurrentUserError = (state: RootState) =>
-  state.currentUserReducer.error;
+export const getCurrentUserRequest = (state: RootState) =>
+  state.currentUserReducer.request;
 
 export default currentUserSlice.reducer;

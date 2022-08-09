@@ -1,11 +1,10 @@
 import AlertAdapter from "../../ComponentAdapters/AlertAdapter";
 import React, { FC, useState } from "react";
 import css from "./index.module.scss";
-import { Button } from "@mui/material";
-import { ErrorType } from "../../../service/types";
 import { Formik, FormikValues } from "formik";
+import { LoadingButton } from "@mui/lab";
 import { TextFieldAdapter } from "../../ComponentAdapters/TextFieldAdapter";
-import { authEnum, userFields } from "../types";
+import { UserType } from "../../../service/slices/currentUser/types";
 import {
   authValidationSchema,
   initialValues,
@@ -13,35 +12,36 @@ import {
 } from "./validation";
 import { buttonStyle } from "../../ComponentAdapters/mui.styles";
 import { fetchUser } from "../../../service/slices/currentUser/currentUser.async";
+import { formEnum, userFields } from "../types";
 import { formNames, isRegistration } from "./constants";
-import { handleAuth } from "../utils";
 import { isDisabledButton } from "./utils";
 import { useAppDispatch, useAppSelector } from "../../../service/store";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
-  whichForm: authEnum;
+  formType: formEnum;
 };
 
-export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
+export const AuthorizationForm: FC<Props> = ({ formType }) => {
   const dispatch = useAppDispatch();
-
-  const [isOpenModal, setOpenModal] = useState(false);
 
   const navigate = useNavigate();
 
-  const currentUserError: ErrorType = useAppSelector(
-    (state) => state.currentUserReducer.error
+  const { request, userEmail }: UserType = useAppSelector(
+    (state) => state.currentUserReducer
   );
-  // проверка на то,пришел ли ответ запроса,только после этого перенаправляем
-  const handleSubmit = async (values: FormikValues) => {
-    await dispatch(fetchUser({ currentUser: values, whichForm }));
-    setOpenModal(!isOpenModal);
 
-    console.log(currentUserError?.status);
-    if (currentUserError?.status == 200) {
-      navigate(`/user/${values.email.split("@")[0]}`);
-    }
+  // проверка на то,пришел ли ответ запроса,только после этого перенаправляем
+  if (request.status == 200) {
+    navigate(`/user/${userEmail?.split("@")[0]}`);
+  }
+
+  const [isOpenModal, setOpenModal] = useState<boolean>(false);
+
+  const handleSubmit = async (values: FormikValues) => {
+    await dispatch(fetchUser({ currentUser: values, formType }));
+
+    setOpenModal(!isOpenModal);
   };
 
   return (
@@ -51,7 +51,7 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
           initialValues={initialValues}
           onSubmit={handleSubmit}
           validationSchema={
-            isRegistration[whichForm]
+            isRegistration[formType]
               ? registerValidationSchema
               : authValidationSchema
           }
@@ -69,7 +69,7 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
                 name={userFields.password}
                 type="password"
               />
-              {isRegistration[whichForm] && (
+              {isRegistration[formType] && (
                 <TextFieldAdapter
                   id={userFields.repeatPassword}
                   label={"Repeat Password"}
@@ -77,24 +77,24 @@ export const AuthorizationForm: FC<Props> = ({ whichForm }) => {
                   type="password"
                 />
               )}
-              <Button
+              <LoadingButton
                 disableElevation
-                disabled={isDisabledButton(values, whichForm) || !isValid}
+                disabled={isDisabledButton(values, formType) || !isValid}
+                loading={!!request.pending}
                 onClick={() => handleSubmit()}
                 sx={buttonStyle}
                 type="submit"
                 variant="outlined"
               >
-                {formNames[whichForm]}
-              </Button>
+                {formNames[formType]}
+              </LoadingButton>
             </>
           )}
         </Formik>
       </div>
       <AlertAdapter
-        alertMessage="Вы успешно вошли!"
-        error={currentUserError}
         open={isOpenModal}
+        request={request}
         setOpenModal={setOpenModal}
       />
     </div>
