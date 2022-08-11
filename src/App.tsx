@@ -1,8 +1,8 @@
-import Authorization from "./features/Authorization";
 import Header from "./features/Header";
 import React from "react";
 import UserConnections from "./features/UserConnections";
 import css from "./index.module.scss";
+import {AuthorizationForm} from "./features/Authorization";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import { ThemeProvider, createTheme } from "@mui/material";
@@ -25,7 +25,7 @@ const App = () => {
             <Header />
             <Routes>
               <Route element={<Navigate replace to="/main" />} path="/" />
-              <Route element={<Authorization />} path="/user/auth" />
+              <Route element={<AuthorizationForm />} path="/user/auth" />
               <Route element={<UserConnections />} path="/user/:login" />
               <Route element={<p>Main</p>} path="/main" />
               <Route element={<div>404</div>} path="*" />

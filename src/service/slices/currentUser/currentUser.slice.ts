@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { initialState } from "./constants";
 import { RootState } from "../../store";
 import { fetchUser } from "./currentUser.async";
+import { errorDataType } from "./types";
 
 const currentUserSlice = createSlice({
   name: "currentUser",
@@ -20,27 +21,36 @@ const currentUserSlice = createSlice({
       state.request.message = action.payload.message;
     },
   },
+
   extraReducers: (builder) => {
     builder.addCase(fetchUser.pending, (state) => {
-      console.log(state);
       state.request.pending = true;
+      state.request.codeMessage = null;
+      state.request.message = null;
+      state.request.status = null;
     });
-    builder.addCase(fetchUser.rejected, (state, action) => {
-      console.log(state, action);
-      state.request.pending = false;
-      state.request.codeMessage = action.error.code;
-      state.request.message = action.error.message;
-      state.request.status = 400;
-    });
-    builder.addCase(fetchUser.fulfilled, (state, action) => {
+
+    builder.addCase(fetchUser.rejected, (state, { payload }) => {
+      const {
+        data: { statusCode, message },
+        statusText,
+      } = payload as errorDataType;
 
       state.request.pending = false;
-      state.userEmail = action.payload.userEmail;
-      state.jwt = action.payload.jwt;
-      state.request.status = action.payload.status;
+      state.request.codeMessage = statusText;
+      state.request.message = message;
+      state.request.status = statusCode;
+    });
+
+    builder.addCase(fetchUser.fulfilled, (state, { payload }) => {
+      state.request.pending = false;
+      state.userEmail = payload?.userEmail;
+      state.jwt = payload?.jwt;
+      state.request.status = payload?.status;
     });
   },
 });
+
 export const { setCurrentUser, setCurrentUserError, dropCurrentUser } =
   currentUserSlice.actions;
 

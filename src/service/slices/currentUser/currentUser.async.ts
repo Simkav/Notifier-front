@@ -3,10 +3,12 @@ import axios from "axios";
 import { formEnum } from "../../../features/Authorization/types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-
 export const fetchUser = createAsyncThunk(
   "currentUser/fetchUser",
-  (payload: { currentUser: FormikValues; formType: formEnum }) => {
+  (
+    payload: { currentUser: FormikValues; formType: formEnum },
+    { rejectWithValue }
+  ) => {
     const { email, password } = payload.currentUser;
 
     const authorizationUrl = new URL(
@@ -29,6 +31,8 @@ export const fetchUser = createAsyncThunk(
           status: response.status,
         };
       })
-
+      .catch((error) => {
+        return rejectWithValue(error.response as any);
+      });
   }
 );
