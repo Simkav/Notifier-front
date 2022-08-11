@@ -1,21 +1,9 @@
-import { Maybe } from "yup/es/types";
-import { ErrorType, requestType } from "../../types";
+import {UserType} from "./types";
 
-export type userType = {
-  userEmail: Maybe<string>;
-  jwt: Maybe<string>;
-  error: ErrorType;
-  request: requestType;
-};
 
-export const initialState: userType = {
+export const initialState: UserType = {
   userEmail: null,
   jwt: null,
-  error: {
-    code: null,
-    message: null,
-    status: null,
-  },
   request: {
     codeMessage: null,
     message: null,

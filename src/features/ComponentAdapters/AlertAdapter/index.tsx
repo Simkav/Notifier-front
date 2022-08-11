@@ -1,11 +1,11 @@
 import Alert, { AlertProps } from "@mui/material/Alert";
-import React, { Dispatch, FC, useEffect, useState } from "react";
+import React, { Dispatch, FC, } from "react";
 import Snackbar, { SnackbarProps } from "@mui/material/Snackbar";
 import { AlertTitle } from "@mui/material";
-import { ErrorType } from "../../../service/types";
+import { requestType } from "../../../service/slices/currentUser/types";
 
 type Options = {
-  error: ErrorType;
+  request: requestType;
   alertMessage?: string;
   setOpenModal: Dispatch<boolean>;
 };
@@ -15,17 +15,11 @@ type ComponentProps = SnackbarProps & AlertProps & Options;
 const AlertAdapter: FC<ComponentProps> = ({
   autoHideDuration = 6000,
   alertMessage,
-  error,
+  request,
   open,
   setOpenModal,
 }) => {
-  const { message, code } = error;
-
-  const [isError, setError] = useState(false);
-
-  useEffect(() => {
-    setError(!!(message || code));
-  }, [message, code]);
+  const { message, codeMessage } = request;
 
   const handleClose = () => setOpenModal(!open);
 
@@ -38,11 +32,9 @@ const AlertAdapter: FC<ComponentProps> = ({
       onClose={handleClose}
       open={open}
     >
-      <Alert severity={isError ? "error" : "success"}>
-        <AlertTitle className={"css.message"}>
-          {isError ? error.message : alertMessage}
-        </AlertTitle>
-        <p className={"css.codeMessage"}>{isError ? code : code}</p>
+      <Alert severity={"error"}>
+        <AlertTitle className={"css.message"}>{message ?? alertMessage}</AlertTitle>
+        <p className={"css.codeMessage"}>{codeMessage}</p>
       </Alert>
     </Snackbar>
   );

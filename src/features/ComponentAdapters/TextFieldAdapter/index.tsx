@@ -18,18 +18,22 @@ const TextFieldComponent = React.memo<ComponentProps>((props) => {
     label,
     type,
     form: { errors, touched },
-    error = false,
     message = "Required field",
     field,
     ...rest
   } = props;
-  
+
   return (
     <>
       <TextField
+        color={
+          !!(errors[field.name] && touched[field.name]) ? "error" : "success"
+        }
         error={!!(errors[field.name] && touched[field.name])}
         helperText={
-          !!(errors[field.name] && touched[field.name]) ? (errors[field.name] as string)  : ""
+          !!(errors[field.name] && touched[field.name])
+            ? (errors[field.name] as string)
+            : ""
         }
         id={id}
         label={label}

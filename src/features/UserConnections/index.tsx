@@ -1,9 +1,7 @@
 import React, { FC, useEffect } from "react";
 import css from "./index.module.scss";
-import { ErrorType } from "../../service/types";
 import { Maybe } from "yup/es/types";
 import { useAppSelector } from "../../service/store";
-import { useNavigate } from "react-router-dom";
 
 const UserConnections: FC = () => {
   const isCurrentUser: Maybe<string> = useAppSelector(
