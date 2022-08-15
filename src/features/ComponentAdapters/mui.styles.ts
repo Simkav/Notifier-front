@@ -3,5 +3,6 @@ export const textStyle = {
     width: '80%',
 };
 export const buttonStyle = {
+    mt: 2,
     width : "50%"
 }

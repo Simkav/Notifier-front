@@ -9,7 +9,7 @@ export const fetchUser = createAsyncThunk(
     payload: { currentUser: FormikValues; formType: formEnum },
     { rejectWithValue }
   ) => {
-    const { email, password } = payload.currentUser;
+    const { email, password, rememberUser } = payload.currentUser;
 
     const authorizationUrl = new URL(
       payload.formType === "authorization"
@@ -24,6 +24,11 @@ export const fetchUser = createAsyncThunk(
       })
       .then((response) => {
         const userData = response.data;
+
+        if (rememberUser) {
+          localStorage.setItem("email", email);
+          localStorage.setItem("jwt", userData.tokens.access_token);
+        }
 
         return {
           userEmail: userData.user.email,

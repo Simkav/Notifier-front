@@ -2,6 +2,7 @@ import AlertAdapter from "../ComponentAdapters/AlertAdapter";
 import FormTabs from "./FormTabs";
 import React, { FC, useState } from "react";
 import css from "./index.module.scss";
+import { Checkbox, FormControlLabel } from "@mui/material";
 import { Formik, FormikValues } from "formik";
 import { LoadingButton } from "@mui/lab";
 import { TextFieldAdapter } from "../ComponentAdapters/TextFieldAdapter";
@@ -15,6 +16,7 @@ import { buttonStyle } from "../ComponentAdapters/mui.styles";
 import { fetchUser } from "../../service/slices/currentUser/currentUser.async";
 import { formEnum, userFields } from "./types";
 import { formNames, isRegistration } from "./Form/constants";
+import { getEmailName } from "./utils";
 import { isDisabledButton } from "./Form/utils";
 import { useAppDispatch, useAppSelector } from "../../service/store";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +32,7 @@ export const AuthorizationForm: FC = () => {
 
   // проверка на то,пришел ли ответ запроса,только после этого перенаправляем
   if (request.status == 200) {
-    navigate(`/user/${userEmail?.split("@")[0]}`);
+    navigate(`/user/${getEmailName(userEmail)}`);
   }
 
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
@@ -55,7 +57,7 @@ export const AuthorizationForm: FC = () => {
             : authValidationSchema
         }
       >
-        {({ handleSubmit, isValid, values, resetForm }) => (
+        {({ handleSubmit, handleChange, isValid, values, resetForm }) => (
           <>
             <FormTabs
               formType={formType}
@@ -84,6 +86,14 @@ export const AuthorizationForm: FC = () => {
                     type="password"
                   />
                 )}
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={values.rememberUser} color="primary" />
+                  }
+                  label="Remember me ?"
+                  name={userFields.rememberUser}
+                  onChange={handleChange}
+                />
                 <LoadingButton
                   disableElevation
                   disabled={isDisabledButton(values, formType) || !isValid}

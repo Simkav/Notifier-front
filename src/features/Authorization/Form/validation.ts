@@ -14,7 +14,7 @@ export const authValidationSchema = Yup.object()
       .min(6, "Must be at least 6 characters long"),
     //TODO back the validation
     //
-      // .matches(
+    // .matches(
     //   /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]/,
     //   "Must Contain One Uppercase, One Lowercase, One Number character"
     // )
@@ -42,4 +42,5 @@ export const initialValues: AnalyticalReportsValues = {
   email: "",
   password: "",
   repeatPassword: "",
+  rememberUser: false,
 };

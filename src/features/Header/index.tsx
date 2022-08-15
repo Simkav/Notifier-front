@@ -4,6 +4,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import React, { useCallback } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import style from "./index.module.scss";
+import {getEmailName} from "../Authorization/utils";
 import { useAppSelector } from "../../service/store";
 import { useNavigate } from "react-router-dom";
 
@@ -43,7 +44,7 @@ const Header = () => {
         <AccountBoxIcon
           className={style.icon}
           fontSize="large"
-          onClick={() => handleClick(currentUserMail ? `user/${currentUserMail}` : "user/auth")}
+          onClick={() => handleClick(currentUserMail ? `user/${getEmailName(currentUserMail)}` : "user/auth")}
           sx={{ color: "#66b2ff" }}
         />
       </Tooltip>
