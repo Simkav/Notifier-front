@@ -7,5 +7,8 @@ export enum userFields {
   email = "email",
   password = "password",
   repeatPassword = "repeatPassword",
+  rememberUser = "rememberUser",
+
+
 }
 

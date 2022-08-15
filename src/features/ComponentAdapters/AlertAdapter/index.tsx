@@ -1,5 +1,5 @@
 import Alert, { AlertProps } from "@mui/material/Alert";
-import React, { Dispatch, FC, } from "react";
+import React, { Dispatch, FC } from "react";
 import Snackbar, { SnackbarProps } from "@mui/material/Snackbar";
 import { AlertTitle } from "@mui/material";
 import { requestType } from "../../../service/slices/currentUser/types";
@@ -32,9 +32,13 @@ const AlertAdapter: FC<ComponentProps> = ({
       onClose={handleClose}
       open={open}
     >
-      <Alert severity={"error"}>
-        <AlertTitle className={"css.message"}>{message ?? alertMessage}</AlertTitle>
-        <p className={"css.codeMessage"}>{codeMessage}</p>
+      <Alert severity={"error"} >
+        <AlertTitle className={"css.message"}>
+          {message ?? alertMessage}
+        </AlertTitle>
+        <p className={"css.codeMessage"}  style={{ minWidth: "200px" }}>
+          {codeMessage}
+        </p>
       </Alert>
     </Snackbar>
   );
