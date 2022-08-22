@@ -1,0 +1,51 @@
+@import "../../../index";
+
+.dates {
+  border-top: 0;
+}
+
+.dateContainer,
+.header {
+  text-align: center;
+}
+
+.headerText {
+  color: rgb(255, 255, 255);
+  opacity: 80%;
+  font-size: 20px;
+}
+
+.dateContainer {
+  @include flex-column;
+  font-size: 18px;
+  height: 50px;
+  line-height: 50px;
+  width: 50px;
+}
+
+.thisMonth {
+  border: 1px solid $border-color;
+  transition: all 0.3s ease-in-out;
+  color: lightgrey;
+  cursor: pointer;
+  &:hover {
+    border-radius: 15px;
+    background-color: $active-background-color;
+    border-color: $active-border-color;
+    color: #66b2ff;
+  }
+}
+
+.notThisMonth {
+  background-color: #10263d;
+  border: 1px solid #1a2e3f;
+  color: #989898;
+  cursor: default;
+}
+
+.container {
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 15px;
+}

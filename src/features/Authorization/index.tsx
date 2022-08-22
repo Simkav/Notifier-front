@@ -21,7 +21,7 @@ import { isDisabledButton } from "./Form/utils";
 import { useAppDispatch, useAppSelector } from "../../service/store";
 import { useNavigate } from "react-router-dom";
 
-export const AuthorizationForm: FC = () => {
+const Authorization: FC = () => {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
@@ -120,3 +120,5 @@ export const AuthorizationForm: FC = () => {
     </>
   );
 };
+
+export default Authorization;
