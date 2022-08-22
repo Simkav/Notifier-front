@@ -3,17 +3,21 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import HelpingText from "../HelpingText";
 import React, { FC, useCallback, useEffect, useState } from "react";
-import UICalendar from "../ComponentAdapters/UICalendar";
+import UICalendar from "../UICalendar";
 import axios, { AxiosError } from "axios";
 import css from "./index.module.scss";
 import getMonth from "date-fns/getMonth";
 import { Maybe } from "yup/es/types";
+import { UIModal } from "../UIModal";
+import { daysOnScreenType } from "../UICalendar/types";
 import { helpingText, monthEnum } from "./constants";
 import { useAppSelector } from "../../service/store";
 import { useQuery } from "@tanstack/react-query";
 
 const Main: FC = () => {
+  const [isOpenAlert, setOpenAlert] = useState<boolean>(false);
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
+  const [day, setDay] = useState<Maybe<any>>(null);
 
   const userToken: Maybe<string> = useAppSelector(
     (state) => state.currentUserReducer.jwt
@@ -23,7 +27,7 @@ const Main: FC = () => {
 
   const notesUrl = new URL(process.env.REACT_APP_NOTE_URL!).href;
 
-  const { isLoading, data, error } = useQuery(
+  const { isLoading, error,  } = useQuery(
     ["notes", userToken],
     async () => {
       await axios
@@ -32,7 +36,9 @@ const Main: FC = () => {
             Authorization: `Bearer ${userToken}`,
           },
         })
-        .then((res) => res.data);
+        .then((response) => response)
+        .catch((_) => setOpenAlert(true))
+        .finally(() => "return");
     },
     {
       enabled: isCurrentUser,
@@ -40,11 +46,6 @@ const Main: FC = () => {
     }
   );
 
-  useEffect(() => {
-    if (error) {
-      setOpenModal(true);
-    }
-  }, [error]);
 
   const [currentYear, setCurrentYear] = useState<number>(
     new Date().getFullYear()
@@ -88,17 +89,18 @@ const Main: FC = () => {
         </div>
         <UICalendar
           currentDate={{ month: currentMonth, year: currentYear }}
-          data={data}
-          error={error}
           isCurrentUser={isCurrentUser}
           isLoading={isLoading}
+          setDay={setDay}
+          setOpenModal={setOpenModal}
         />
       </div>
+      <UIModal day={day} isOpen={isOpenModal} setOpen={setOpenModal} />
       <AlertAdapter
         footerMessage={"CAN'T GET NOTIFICATIONS FROM SERVER"}
         message={(error as AxiosError)?.message}
-        open={isOpenModal}
-        setOpenModal={setOpenModal}
+        open={isOpenAlert}
+        setOpenAlert={setOpenAlert}
       />
     </>
   );

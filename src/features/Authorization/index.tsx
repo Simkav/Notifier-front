@@ -35,12 +35,12 @@ const Authorization: FC = () => {
     navigate(`/user/${getEmailName(userEmail)}`);
   }
 
-  const [isOpenModal, setOpenModal] = useState<boolean>(false);
+  const [isOpenAlert, setOpenAlert] = useState<boolean>(false);
 
   const handleSubmit = async (values: FormikValues) => {
     await dispatch(fetchUser({ currentUser: values, formType }));
 
-    setOpenModal(!isOpenModal);
+      setOpenAlert(!isOpenAlert);
   };
 
   const [formType, setFormType] = useState<formEnum>(formEnum.authorization);
@@ -115,8 +115,8 @@ const Authorization: FC = () => {
       <AlertAdapter
         footerMessage={request?.codeMessage}
         message={request?.message}
-        open={isOpenModal}
-        setOpenModal={setOpenModal}
+        open={isOpenAlert}
+        setOpenAlert={setOpenAlert}
       />
     </>
   );

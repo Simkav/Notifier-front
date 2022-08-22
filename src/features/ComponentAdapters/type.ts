@@ -7,7 +7,7 @@ export type BaseAdapterProps = {
     /**
      * Заголовок поля
      */
-    label: string;
+    label?: string;
     /**
      * Имеет ли поле заголовок
      */

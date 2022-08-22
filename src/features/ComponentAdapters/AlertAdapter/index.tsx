@@ -5,7 +5,7 @@ import { AlertTitle } from "@mui/material";
 import { Maybe } from "yup/es/types";
 
 type Options = {
-  setOpenModal: Dispatch<boolean>;
+  setOpenAlert: Dispatch<boolean>;
   message: Maybe<string>;
   footerMessage: Maybe<string>;
 };
@@ -17,9 +17,9 @@ const AlertAdapter: FC<ComponentProps> = ({
   message,
   footerMessage,
   open,
-  setOpenModal,
+  setOpenAlert,
 }) => {
-  const handleClose = () => setOpenModal(!open);
+  const handleClose = () => setOpenAlert(!open);
 
   // TODO разобраться с алертами (красный/зеленый в зависимости от ошибки)
 
