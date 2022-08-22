@@ -3,7 +3,7 @@ import cn from "classnames";
 import css from "./index.module.scss";
 import { Maybe } from "yup/es/types";
 import { Skeleton } from "@mui/material";
-import { currentDateType } from "../../Main/constants";
+import { currentDateType } from "../Main/constants";
 import { daysOfWeekEnum } from "./constants";
 import { daysOnScreenType } from "./types";
 import { showDays } from "./utils";
@@ -11,8 +11,8 @@ import { showDays } from "./utils";
 export type Props = {
   isCurrentUser: boolean;
   isLoading: boolean;
-  data: any;
-  error: any;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setDay: React.Dispatch<React.SetStateAction<Maybe<any>>>;
   currentDate: currentDateType;
 };
 
@@ -20,14 +20,12 @@ const UICalendar: FC<Props> = ({
   currentDate,
   isCurrentUser,
   isLoading,
-  data,
-  error,
+  setDay,
+  setOpenModal,
 }) => {
-  const [isOpenModal, setOpenModal] = useState<boolean>(false);
-  const [day, setDay] = useState<Maybe<daysOnScreenType>>(null);
-
   // const handleClick = (day: daysOnScreenType) => {
   const handleClick = (day: any) => {
+    console.log(day);
     setOpenModal(true);
     setDay(day);
   };
@@ -49,7 +47,7 @@ const UICalendar: FC<Props> = ({
         {!isLoading && daysToShow
           ? daysToShow.map((el) => (
               <div
-                key={el.id}
+                key={el.key}
                 className={cn(
                   css.dateContainer,
                   el.currentMonthAndNotPast
@@ -74,7 +72,6 @@ const UICalendar: FC<Props> = ({
               />
             ))}
       </div>
-      {isOpenModal && <div>Открыл модалку</div>}
     </div>
   );
 };

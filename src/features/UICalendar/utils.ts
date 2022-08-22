@@ -1,5 +1,6 @@
-import { currentDateType } from "../../Main/constants";
+import { currentDateType } from "../Main/constants";
 import { format, getDaysInMonth, isBefore } from "date-fns";
+import { v4 as uuid } from "uuid";
 
 const daysOnScreen = 42;
 
@@ -10,12 +11,15 @@ export const showDays = ({ month, year }: currentDateType) => {
 
   const firstDayOfMonth = Number(format(new Date(year, month, 1), "i"));
 
+  // UUID для правильной анимации при смене месяца
+
   const previousMonthDays = new Array(firstDayOfMonth)
     .fill(null)
     .map((_, i) => ({
       currentMonthAndNotPast: false,
       day: prevMonthDaysCount - i,
-      id: `${prevMonthDaysCount - i + "/" + (month - 1) + "/" + year}`,
+      id: `${prevMonthDaysCount - i + "/" + month + "/" + year}`,
+      key: uuid(),
     }))
     .reverse();
 
@@ -27,7 +31,8 @@ export const showDays = ({ month, year }: currentDateType) => {
         new Date()
       ),
       day: i + 1,
-      id: `${i + 1 + "/" + month + "/" + year}`,
+      id: `${i + 1 + "/" + (month + 1) + "/" + year}`,
+      key: uuid(),
     }));
 
   const nextMothDays = new Array(
@@ -39,7 +44,8 @@ export const showDays = ({ month, year }: currentDateType) => {
     .map((_, i) => ({
       currentMonthAndNotPast: false,
       day: i + 1,
-      id: `${i + 1 + "/" + (month + 1) + "/" + year}`,
+      id: `${i + 1 + "/" + (month + 2) + "/" + year}`,
+      key: uuid(),
     }));
 
   const daysToShow = [...previousMonthDays, ...thisMothDays, ...nextMothDays];
