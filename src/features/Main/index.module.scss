@@ -1,0 +1,35 @@
+@import "../../index";
+
+.container {
+  @include flex-column;
+  width: 90vw;
+  margin: 40px auto auto;
+}
+
+.calendarHead {
+  display: flex;
+  align-items: center;
+  height: 50px;
+}
+
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.arrow {
+  cursor: pointer;
+  color: lightgrey;
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+.calendarHeadText {
+  cursor: default;
+  width: 220px;
+  margin: 0 10px;
+  font-size: 1.5em;
+  text-align: center;
+}

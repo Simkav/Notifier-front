@@ -5,14 +5,21 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Roboto Mono", sans-serif;
-  color: lightgrey;
+  p,h1,h2,h3,h4,h5,h6{
+    color: lightgrey;
+  }
 }
 
 //variables declaration
 
 $primary-color: #66b2ff;
+
 $background-color: #0a1929;
+$active-background-color: #0d1f33;
+
 $border-color: #233b56;
+$active-border-color: #2d4b6c;
+
 
 //mixins
 
