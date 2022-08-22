@@ -113,8 +113,9 @@ const Authorization: FC = () => {
         )}
       </Formik>
       <AlertAdapter
+        footerMessage={request?.codeMessage}
+        message={request?.message}
         open={isOpenModal}
-        request={request}
         setOpenModal={setOpenModal}
       />
     </>

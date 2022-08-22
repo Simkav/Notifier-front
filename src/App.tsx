@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import css from "./index.module.scss";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-// import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { setCurrentUser } from "./service/slices/currentUser/currentUser.slice";
 import { useAppDispatch } from "./service/store";
@@ -18,7 +18,7 @@ const darkTheme = createTheme({
 });
 
 const App: FC = () => {
-  // const queryClient = new QueryClient();
+  const queryClient = new QueryClient();
 
   const dispatch = useAppDispatch();
 
@@ -29,23 +29,26 @@ const App: FC = () => {
   if (userEmail && jwt) {
     dispatch(setCurrentUser({ jwt, userEmail }));
   }
+  // TODO сделать компонент подгрузки
 
   return (
     <div className={css.container}>
-      {/* <QueryClientProvider client={queryClient}>*/}
-      <ThemeProvider theme={darkTheme}>
-        <BrowserRouter>
-          <Header />
-          <Routes>
-            <Route element={<Main />} path="/main" />
-            <Route element={<Navigate replace to="/main" />} path="/" />
-            <Route element={<Authorization />} path="/user/auth" />
-            <Route element={<UserConnections />} path="/user/:login" />
-            <Route element={<div>404</div>} path="*" />
-          </Routes>
-        </BrowserRouter>
-      </ThemeProvider>
-      {/* </QueryClientProvider>*/}
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={darkTheme}>
+          <BrowserRouter>
+            <Header />
+            <React.Suspense fallback={"Loading..."}>
+              <Routes>
+                <Route element={<Main />} path="/main" />
+                <Route element={<Navigate replace to="/main" />} path="/" />
+                <Route element={<Authorization />} path="/user/auth" />
+                <Route element={<UserConnections />} path="/user/:login" />
+                <Route element={<div>404</div>} path="*" />
+              </Routes>
+            </React.Suspense>
+          </BrowserRouter>
+        </ThemeProvider>
+      </QueryClientProvider>
     </div>
   );
 };
