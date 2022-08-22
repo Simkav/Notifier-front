@@ -5,7 +5,7 @@ export type notificationsOnDayType = {
 };
 
 export type daysOnScreenType = {
-  currentMonth: Maybe<boolean>;
+  currentMonthAndNotPast: Maybe<boolean>;
   day: Maybe<number>;
   id: Maybe<string>;
   notificationsOnDay: Maybe<notificationsOnDayType>;

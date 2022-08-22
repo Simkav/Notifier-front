@@ -2,18 +2,27 @@ import React, { FC, useMemo, useState } from "react";
 import cn from "classnames";
 import css from "./index.module.scss";
 import { Maybe } from "yup/es/types";
-import { Skeleton } from "@mui/lab";
-import {currentDateType} from "../../Main/constants";
+import { Skeleton } from "@mui/material";
+import { currentDateType } from "../../Main/constants";
 import { daysOfWeekEnum } from "./constants";
 import { daysOnScreenType } from "./types";
 import { showDays } from "./utils";
 
 export type Props = {
   isCurrentUser: boolean;
+  isLoading: boolean;
+  data: any;
+  error: any;
   currentDate: currentDateType;
 };
 
-const UICalendar: FC<Props> = ({ currentDate, isCurrentUser }) => {
+const UICalendar: FC<Props> = ({
+  currentDate,
+  isCurrentUser,
+  isLoading,
+  data,
+  error,
+}) => {
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
   const [day, setDay] = useState<Maybe<daysOnScreenType>>(null);
 
@@ -37,16 +46,20 @@ const UICalendar: FC<Props> = ({ currentDate, isCurrentUser }) => {
           </div>
         ))}
 
-        {daysToShow
+        {!isLoading && daysToShow
           ? daysToShow.map((el) => (
               <div
                 key={el.id}
                 className={cn(
                   css.dateContainer,
-                  el.currentMonth ? [css.thisMonth] : [css.notThisMonth]
+                  el.currentMonthAndNotPast
+                    ? [css.thisMonth]
+                    : [css.notThisMonth]
                 )}
                 onClick={() => {
-                  el.currentMonth && isCurrentUser ? handleClick(el) : null;
+                  el.currentMonthAndNotPast && isCurrentUser
+                    ? handleClick(el)
+                    : null;
                 }}
               >
                 {el.day}

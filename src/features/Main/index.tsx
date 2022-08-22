@@ -1,18 +1,50 @@
+import AlertAdapter from "../ComponentAdapters/AlertAdapter";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import HelpingText from "../HelpingText";
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import UICalendar from "../ComponentAdapters/UICalendar";
+import axios, { AxiosError } from "axios";
 import css from "./index.module.scss";
 import getMonth from "date-fns/getMonth";
 import { Maybe } from "yup/es/types";
 import { helpingText, monthEnum } from "./constants";
 import { useAppSelector } from "../../service/store";
+import { useQuery } from "@tanstack/react-query";
 
 const Main: FC = () => {
-  const isCurrentUser: Maybe<string> = useAppSelector(
+  const [isOpenModal, setOpenModal] = useState<boolean>(false);
+
+  const userToken: Maybe<string> = useAppSelector(
     (state) => state.currentUserReducer.jwt
   );
+
+  const isCurrentUser = !!userToken;
+
+  const notesUrl = new URL(process.env.REACT_APP_NOTE_URL!).href;
+
+  const { isLoading, data, error } = useQuery(
+    ["notes", userToken],
+    async () => {
+      await axios
+        .get(notesUrl, {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        })
+        .then((res) => res.data);
+    },
+    {
+      enabled: isCurrentUser,
+      retry: false,
+    }
+  );
+
+  useEffect(() => {
+    if (error) {
+      setOpenModal(true);
+    }
+  }, [error]);
 
   const [currentYear, setCurrentYear] = useState<number>(
     new Date().getFullYear()
@@ -56,9 +88,18 @@ const Main: FC = () => {
         </div>
         <UICalendar
           currentDate={{ month: currentMonth, year: currentYear }}
-          isCurrentUser={!!isCurrentUser}
+          data={data}
+          error={error}
+          isCurrentUser={isCurrentUser}
+          isLoading={isLoading}
         />
       </div>
+      <AlertAdapter
+        footerMessage={"CAN'T GET NOTIFICATIONS FROM SERVER"}
+        message={(error as AxiosError)?.message}
+        open={isOpenModal}
+        setOpenModal={setOpenModal}
+      />
     </>
   );
 };

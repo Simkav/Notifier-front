@@ -1,10 +1,10 @@
 import { currentDateType } from "../../Main/constants";
-import { format, getDaysInMonth } from "date-fns";
+import { format, getDaysInMonth, isBefore } from "date-fns";
 
 const daysOnScreen = 42;
 
 export const showDays = ({ month, year }: currentDateType) => {
-  const currentMonthDaysCount = getDaysInMonth(new Date(year, month));
+  const currentMonthAndNotPastDaysCount = getDaysInMonth(new Date(year, month));
 
   const prevMonthDaysCount = getDaysInMonth(new Date(year, month - 1));
 
@@ -13,31 +13,33 @@ export const showDays = ({ month, year }: currentDateType) => {
   const previousMonthDays = new Array(firstDayOfMonth)
     .fill(null)
     .map((_, i) => ({
-      currentMonth: false,
+      currentMonthAndNotPast: false,
       day: prevMonthDaysCount - i,
-      id: Math.random(),
+      id: `${prevMonthDaysCount - i + "/" + (month - 1) + "/" + year}`,
     }))
     .reverse();
 
-  // TODO привести к датам и проверять на isBefore,дизейблить прошедшие даты
-  const thisMothDays = new Array(currentMonthDaysCount)
+  const thisMothDays = new Array(currentMonthAndNotPastDaysCount)
     .fill(null)
     .map((_, i) => ({
-      currentMonth: true,
+      currentMonthAndNotPast: !isBefore(
+        new Date(year, month, i + 2),
+        new Date()
+      ),
       day: i + 1,
-      id: Math.random(),
+      id: `${i + 1 + "/" + month + "/" + year}`,
     }));
 
   const nextMothDays = new Array(
-    daysOnScreen - currentMonthDaysCount - firstDayOfMonth > 0
-      ? daysOnScreen - currentMonthDaysCount - firstDayOfMonth
+    daysOnScreen - currentMonthAndNotPastDaysCount - firstDayOfMonth > 0
+      ? daysOnScreen - currentMonthAndNotPastDaysCount - firstDayOfMonth
       : 0
   )
     .fill(null)
     .map((_, i) => ({
-      currentMonth: false,
+      currentMonthAndNotPast: false,
       day: i + 1,
-      id: Math.random(),
+      id: `${i + 1 + "/" + (month + 1) + "/" + year}`,
     }));
 
   const daysToShow = [...previousMonthDays, ...thisMothDays, ...nextMothDays];
