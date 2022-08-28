@@ -3,7 +3,6 @@ import Modal from "@mui/material/Modal";
 import ModalForm from "./ModalForm";
 import React from "react";
 import css from "./index.module.scss";
-import { RadioAdapter } from "../ComponentAdapters/RadioAdapter";
 import { format, parse } from "date-fns";
 
 type ComponentProps = {
@@ -24,7 +23,6 @@ export const UIModal = React.memo<ComponentProps>(
       parse(day.id, "dd/MM/yyyy", new Date()),
       "LLLL do , yyyy"
     );
-    console.log(dayName);
 
     return (
       <>
@@ -40,10 +38,11 @@ export const UIModal = React.memo<ComponentProps>(
           open={isOpen}
         >
           <div className={css.container}>
-            <h3 className={css.modalHeader}>{dayName}</h3>
-            <div className={css.modalForm}>
-              <ModalForm />
-            </div>
+            <h3 className={css.modalHeader}>
+              <span>{dayName}</span>
+              <span>Choose your notification parameters : </span>
+            </h3>
+            <ModalForm />
           </div>
         </Modal>
       </>

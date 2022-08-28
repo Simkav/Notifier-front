@@ -1,3 +1,4 @@
+import NumberFormat, { InputAttributes } from "react-number-format";
 import React from "react";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { BaseAdapterProps } from "../type";
@@ -6,40 +7,79 @@ import { textStyle } from "../mui.styles";
 
 type Options = {
   message?: string;
+  isNumberField?: boolean;
+  maxLength?: number;
 };
 
 type Props = Options & BaseAdapterProps & TextFieldProps;
 
 type ComponentProps = Props & FieldProps;
 
+const NumberFormatCustom = (props: any) => {
+  const { name, maxLength, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      allowNegative={false}
+      error={true}
+      maxLength={maxLength}
+      name={name}
+      style={{ textAlign: "center" }}
+    />
+  );
+};
+
 const TextFieldComponent = React.memo<ComponentProps>((props) => {
   const {
     id,
     label,
-    type,
-    form: { errors, touched },
+    form: { errors, touched, values },
     message = "Required field",
     field,
+    isNumberField,
+    sx,
+    variant = "filled",
+    maxLength,
     ...rest
   } = props;
+
+  const helpText = () => {
+    if (maxLength) {
+      return values[field.name]
+        ? values[field.name].length + " / " + maxLength
+        : 0 + " / " + maxLength;
+    }
+
+    if (errors[field.name] && touched[field.name]) {
+      return errors[field.name] as string;
+    }
+
+    return "";
+  };
 
   return (
     <>
       <TextField
+        InputProps={
+          isNumberField
+            ? {
+                inputComponent: NumberFormatCustom as React.FC<InputAttributes>,
+              }
+            : {}
+        }
         color={
           !!(errors[field.name] && touched[field.name]) ? "error" : "success"
         }
         error={!!(errors[field.name] && touched[field.name])}
-        helperText={
-          !!(errors[field.name] && touched[field.name])
-            ? (errors[field.name] as string)
-            : ""
-        }
+        helperText={helpText()}
         id={id}
+        inputProps={{
+          maxLength: [maxLength],
+        }}
         label={label}
-        sx={textStyle}
-        type={type}
-        variant="filled"
+        sx={sx ?? textStyle}
+        variant={variant}
         {...field}
         {...rest}
       />

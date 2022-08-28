@@ -1,7 +1,36 @@
+@import "../../../index";
+
 .radio {
   color: lightgray;
 }
 
+.container {
+  @include flex-column;
+  align-items: flex-start;
+  width: 60%;
+}
+
 .activeRadio {
   color: lightblue;
+}
+
+.submitButton {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 40%;
+  margin-bottom: 40px;
+}
+
+.blockContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0 0 20px 0;
+}
+
+.interval {
+  display: flex;
+  gap: 15px;
 }

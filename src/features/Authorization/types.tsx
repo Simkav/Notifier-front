@@ -8,7 +8,5 @@ export enum userFields {
   password = "password",
   repeatPassword = "repeatPassword",
   rememberUser = "rememberUser",
-
-
 }
 
