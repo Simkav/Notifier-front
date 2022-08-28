@@ -107,7 +107,7 @@ const Authorization: FC = () => {
                 >
                   {formNames[formType]}
                 </LoadingButton>
-              </div>{" "}
+              </div>
             </div>
           </>
         )}

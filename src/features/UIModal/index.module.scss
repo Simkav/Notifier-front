@@ -11,12 +11,13 @@
   top: 400px;
   transform: translate(-50%, -50%);
   width: 600px;
-
 }
 
-.modalHeader{
+.modalHeader {
   margin: 20px;
+  @include flex-column;
+  gap: 10px;
 }
-.modalForm{
+.modalForm {
   height: 300px;
 }
