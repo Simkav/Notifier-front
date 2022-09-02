@@ -23,6 +23,7 @@
     "axios": "^0.27.2",
     "classnames": "^2.3.1",
     "clean-webpack-plugin": "^4.0.0",
+    "clipboard-copy": "^4.0.1",
     "date-fns": "^2.29.1",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.5.0",

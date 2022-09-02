@@ -21,7 +21,7 @@ export const UIModal = React.memo<ComponentProps>(
 
     const dayName = format(
       parse(day.id, "dd/MM/yyyy", new Date()),
-      "LLLL do , yyyy"
+      "LLLL do yyyy"
     );
 
     return (
@@ -40,7 +40,7 @@ export const UIModal = React.memo<ComponentProps>(
           <div className={css.container}>
             <h3 className={css.modalHeader}>
               <span>{dayName}</span>
-              <span>Choose your notification parameters : </span>
+              <span>Choose your notification parameters</span>
             </h3>
             <ModalForm />
           </div>
