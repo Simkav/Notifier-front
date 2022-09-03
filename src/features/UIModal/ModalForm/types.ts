@@ -1,8 +1,7 @@
 export const createNotificationType = {
   from: "from",
-  interval: {
-    type: "type",
-    value: "value",
-  },
+  interval: "interval",
   text: "text",
+  type: "type",
+  value: "value",
 };

@@ -26,6 +26,10 @@ const Authorization: FC = () => {
 
   const navigate = useNavigate();
 
+  const [isOpenAlert, setOpenAlert] = useState<boolean>(false);
+
+  const [formType, setFormType] = useState<formEnum>(formEnum.authorization);
+
   const { request, userEmail }: UserType = useAppSelector(
     (state) => state.currentUserReducer
   );
@@ -35,7 +39,6 @@ const Authorization: FC = () => {
     navigate(`/user/${getEmailName(userEmail)}`);
   }
 
-  const [isOpenAlert, setOpenAlert] = useState<boolean>(false);
 
   const handleSubmit = async (values: FormikValues) => {
     await dispatch(fetchUser({ currentUser: values, formType }));
@@ -43,7 +46,6 @@ const Authorization: FC = () => {
       setOpenAlert(!isOpenAlert);
   };
 
-  const [formType, setFormType] = useState<formEnum>(formEnum.authorization);
 
   return (
     <>

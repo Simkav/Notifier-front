@@ -36,6 +36,14 @@
   }
 }
 
+.activeDay {
+  border: 1px solid #492356;
+  &:hover {
+    border-color: #602e70;
+
+  }
+}
+
 .notThisMonth {
   background-color: #10263d;
   border: 1px solid #1a2e3f;

@@ -25,6 +25,13 @@ const darkTheme = createTheme({
         },
       },
     },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          color: "lightgrey",
+        },
+      },
+    },
   },
 
   palette: {

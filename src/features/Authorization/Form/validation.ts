@@ -11,12 +11,12 @@ export const authValidationSchema = Yup.object()
     [userFields.password]: Yup.string()
       .nullable()
       .required("Password is required")
-      .min(6, "Must be at least 6 characters long")
-      //TODO back the validation
-      .matches(
-        /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]/,
-        "Must Contain One Uppercase, One Lowercase, One Number character"
-      ),
+      .min(6, "Must be at least 6 characters long"),
+    //TODO back the validation
+    // .matches(
+    //   /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]/,
+    //   "Must Contain One Uppercase, One Lowercase, One Number character"
+    // ),
   })
   .defined();
 

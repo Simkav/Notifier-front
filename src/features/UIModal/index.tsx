@@ -1,20 +1,24 @@
 import Backdrop from "@mui/material/Backdrop";
 import Modal from "@mui/material/Modal";
 import ModalForm from "./ModalForm";
-import React from "react";
+import ModalTabs from "./ModalTabs";
+import React, { useState } from "react";
 import css from "./index.module.scss";
 import { format, parse } from "date-fns";
+import { modalTabs } from "./ModalTabs/constants";
 
 type ComponentProps = {
   isOpen: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   day?: any;
 };
 
 export const UIModal = React.memo<ComponentProps>(
-  ({ isOpen, setOpen, day }) => {
+  ({ isOpen, setOpenModal, day }) => {
+    const [modalType, setModalType] = useState<modalTabs>(modalTabs.create);
+
     if (!day) {
-      setOpen(false);
+      setOpenModal(false);
 
       return <></>;
     }
@@ -25,27 +29,32 @@ export const UIModal = React.memo<ComponentProps>(
     );
 
     return (
-      <>
-        <Modal
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 700,
-          }}
-          aria-describedby="modal-modal-description"
-          aria-labelledby="modal-modal-title"
-          disableAutoFocus={true}
-          onClose={() => setOpen(false)}
-          open={isOpen}
-        >
+      <Modal
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 700,
+        }}
+        aria-describedby="modal-modal-description"
+        aria-labelledby="modal-modal-title"
+        disableAutoFocus={true}
+        onClose={() => setOpenModal(false)}
+        open={isOpen}
+      >
+        <>
           <div className={css.container}>
             <h3 className={css.modalHeader}>
               <span>{dayName}</span>
               <span>Choose your notification parameters</span>
             </h3>
-            <ModalForm />
+            <ModalTabs modalType={modalType} setModalType={setModalType} />
+            {modalType === modalTabs.create ? (
+              <ModalForm setOpenModal={setOpenModal} />
+            ) : (
+              <>All</>
+            )}
           </div>
-        </Modal>
-      </>
+        </>
+      </Modal>
     );
   }
 );

@@ -1,11 +1,11 @@
-import React, { FC, useMemo, useState } from "react";
+import React, { FC, useMemo } from "react";
 import cn from "classnames";
 import css from "./index.module.scss";
 import { Maybe } from "yup/es/types";
+import {NotificationsType} from "./types";
 import { Skeleton } from "@mui/material";
 import { currentDateType } from "../Main/constants";
 import { daysOfWeekEnum } from "./constants";
-import { daysOnScreenType } from "./types";
 import { showDays } from "./utils";
 
 export type Props = {
@@ -14,6 +14,7 @@ export type Props = {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   setDay: React.Dispatch<React.SetStateAction<Maybe<any>>>;
   currentDate: currentDateType;
+  notificationData: NotificationsType;
 };
 
 const UICalendar: FC<Props> = ({
@@ -22,9 +23,10 @@ const UICalendar: FC<Props> = ({
   isLoading,
   setDay,
   setOpenModal,
+  notificationData,
 }) => {
   // const handleClick = (day: daysOnScreenType) => {
-  const handleClick = (day: any) => {
+    const handleClick = (day: any) => {
     console.log(day);
     setOpenModal(true);
     setDay(day);
@@ -52,7 +54,8 @@ const UICalendar: FC<Props> = ({
                   css.dateContainer,
                   el.currentMonthAndNotPast
                     ? [css.thisMonth]
-                    : [css.notThisMonth]
+                    : [css.notThisMonth],
+                  false ? css.activeDay : "null"
                 )}
                 onClick={() => {
                   el.currentMonthAndNotPast && isCurrentUser
