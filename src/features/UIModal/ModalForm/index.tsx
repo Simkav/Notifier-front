@@ -1,5 +1,6 @@
 import Label from "../../FormLabel";
 import React from "react";
+import axios from "axios";
 import css from "./index.module.scss";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { Formik } from "formik";
@@ -9,8 +10,13 @@ import { TimePickerAdapter } from "../../ComponentAdapters/TimePickerAdapter";
 import { createNotificationType } from "./types";
 import { initialValues, notificationValidationSchema } from "./validation";
 import { radioButtonsValues } from "./constants";
+import { useMutation } from "@tanstack/react-query";
 
 const ModalForm = () => {
+  // const handleCreateNotification = useMutation((notificationData) => {
+  //   axios.post("https://jsonplaceholder.typicode.com/posts", notificationData);
+  // });
+
   const handleSubmit = (values: any) => {
     console.log(values);
   };
@@ -32,20 +38,20 @@ const ModalForm = () => {
                 <TextFieldAdapter
                   isNumberField={true}
                   maxLength={3}
-                  name={createNotificationType.interval.value}
+                  name={"interval.value"}
                   sx={{ width: "60px" }}
                   variant="standard"
                 />
                 <RadioGroup
                   row
-                  name={createNotificationType.interval.type}
+                  name={"interval.type"}
                   onChange={handleChange}
-                  value={values.type}
+                  value={values.interval.type}
                 >
                   <FormControlLabel
-                    checked={values.type === radioButtonsValues.days}
+                    checked={values.interval.type === radioButtonsValues.days}
                     className={
-                      values.type === radioButtonsValues.days
+                      values.interval.type === radioButtonsValues.days
                         ? css.activeRadio
                         : css.radio
                     }

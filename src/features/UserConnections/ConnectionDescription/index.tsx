@@ -1,6 +1,8 @@
 import AlertAdapter from "../../ComponentAdapters/AlertAdapter";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Fade from "@mui/material/Fade";
 import React, { FC, useState } from "react";
+import Tooltip from "@mui/material/Tooltip";
 import copy from "clipboard-copy";
 import css from "./index.module.scss";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
@@ -65,12 +67,14 @@ const ConnectionDescription: FC<Props> = ({
                 </p>
                 <p>
                   Copy this phrase&nbsp;&nbsp;
+                  <Tooltip TransitionComponent={Fade} title="Copy">
                   <span
                     className={css.emphasise}
                     onClick={() => handleCopy(code)}
                   >
                     /register {code}
                   </span>
+                    </Tooltip>
                   &nbsp;&nbsp;and send it to our {botName[descriptionFor]}
                 </p>
                 <p>

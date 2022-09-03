@@ -1,5 +1,3 @@
-
-
 export const createNotificationType = {
   from: "from",
   interval: {
@@ -8,4 +6,3 @@ export const createNotificationType = {
   },
   text: "text",
 };
-

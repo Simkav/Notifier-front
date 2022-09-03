@@ -23,7 +23,6 @@ const UserConnections: FC = () => {
 
   const handleClick = useCallback(
     (panel: connectionsVariation) => {
-      console.log(panel, activePanel);
       if (activePanel === panel) {
         setActivePanel(null);
       } else {

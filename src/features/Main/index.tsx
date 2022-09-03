@@ -9,7 +9,6 @@ import css from "./index.module.scss";
 import getMonth from "date-fns/getMonth";
 import { Maybe } from "yup/es/types";
 import { UIModal } from "../UIModal";
-import { daysOnScreenType } from "../UICalendar/types";
 import { helpingText, monthEnum } from "./constants";
 import { useAppSelector } from "../../service/store";
 import { useQuery } from "@tanstack/react-query";
