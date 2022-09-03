@@ -1,24 +1,49 @@
 import Label from "../../FormLabel";
-import React from "react";
+import React, { FC } from "react";
 import axios from "axios";
 import css from "./index.module.scss";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { Formik } from "formik";
 import { LoadingButton } from "@mui/lab";
+import { Maybe } from "yup/es/types";
 import { TextFieldAdapter } from "../../ComponentAdapters/TextFieldAdapter";
 import { TimePickerAdapter } from "../../ComponentAdapters/TimePickerAdapter";
 import { createNotificationType } from "./types";
 import { initialValues, notificationValidationSchema } from "./validation";
 import { radioButtonsValues } from "./constants";
+import { useAppSelector } from "../../../service/store";
 import { useMutation } from "@tanstack/react-query";
 
-const ModalForm = () => {
-  // const handleCreateNotification = useMutation((notificationData) => {
-  //   axios.post("https://jsonplaceholder.typicode.com/posts", notificationData);
-  // });
+type Props = {
+  setOpenModal: (value: ((prevState: boolean) => boolean) | boolean) => void;
+};
 
-  const handleSubmit = (values: any) => {
-    console.log(values);
+const ModalForm: FC<Props> = ({ setOpenModal }) => {
+  const userToken: Maybe<string> = useAppSelector(
+    (state) => state.currentUserReducer.jwt
+  );
+
+  const handleCreateNotification = useMutation(
+    (notificationData: typeof notificationValidationSchema) => {
+      return axios.post(
+        String(process.env.REACT_APP_NOTE_URL),
+        {
+          ...notificationData,
+          from: new Date(notificationData.from).toUTCString(),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
+    }
+  );
+  const { mutate, isLoading } = handleCreateNotification;
+
+  const handleSubmit = async (values: any) => {
+    await mutate(values);
+    setOpenModal(false);
   };
 
   return (
@@ -60,9 +85,9 @@ const ModalForm = () => {
                     value={radioButtonsValues.days}
                   />
                   <FormControlLabel
-                    checked={values.type === radioButtonsValues.weeks}
+                    checked={values.interval.type === radioButtonsValues.weeks}
                     className={
-                      values.type === radioButtonsValues.weeks
+                      values.interval.type === radioButtonsValues.weeks
                         ? css.activeRadio
                         : css.radio
                     }
@@ -71,9 +96,9 @@ const ModalForm = () => {
                     value={radioButtonsValues.weeks}
                   />
                   <FormControlLabel
-                    checked={values.type === radioButtonsValues.months}
+                    checked={values.interval.type === radioButtonsValues.months}
                     className={
-                      values.type === radioButtonsValues.months
+                      values.interval.type === radioButtonsValues.months
                         ? css.activeRadio
                         : css.radio
                     }
@@ -106,7 +131,8 @@ const ModalForm = () => {
           <LoadingButton
             className={css.submitButton}
             disabled={!isValid && dirty}
-            onClick={() => console.log(errors, values)}
+            loading={isLoading}
+            onClick={() => handleSubmit(values)}
             type="submit"
             variant="outlined"
           >
