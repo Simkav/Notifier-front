@@ -7,7 +7,7 @@ import { Maybe } from "yup/es/types";
 type Options = {
   setOpenAlert: Dispatch<boolean>;
   message: Maybe<string>;
-  footerMessage: Maybe<string>;
+  footerMessage?: Maybe<string>;
 };
 
 type ComponentProps = SnackbarProps & AlertProps & Options;
@@ -18,10 +18,9 @@ const AlertAdapter: FC<ComponentProps> = ({
   footerMessage,
   open,
   setOpenAlert,
+  severity = "error",
 }) => {
   const handleClose = () => setOpenAlert(!open);
-
-  // TODO разобраться с алертами (красный/зеленый в зависимости от ошибки)
 
   return (
     <Snackbar
@@ -30,10 +29,10 @@ const AlertAdapter: FC<ComponentProps> = ({
       onClose={handleClose}
       open={open}
     >
-      <Alert severity={"error"}>
-        <AlertTitle className={"css.message"}>{message}</AlertTitle>
-        <p className={"css.footerMessage"} style={{ minWidth: "200px" }}>
-          {footerMessage}
+      <Alert severity={severity}>
+        <AlertTitle >{message}</AlertTitle>
+        <p style={{ minWidth: "150px" }}>
+          {footerMessage ?? undefined}
         </p>
       </Alert>
     </Snackbar>

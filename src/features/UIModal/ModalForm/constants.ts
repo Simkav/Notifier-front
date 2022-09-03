@@ -6,8 +6,8 @@ export type ModalFormType = {
 
 }
 
-
-export const initialValues : ModalFormType = {
-    type: null,
-    value: null,
-};
+export enum radioButtonsValues {
+    days = "days",
+    weeks = "weeks",
+    months = "months",
+}

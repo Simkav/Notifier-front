@@ -1,6 +1,6 @@
 import Label from "../../FormLabel";
 import React from "react";
-
+import axios from "axios";
 import css from "./index.module.scss";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { Formik } from "formik";
@@ -9,8 +9,14 @@ import { TextFieldAdapter } from "../../ComponentAdapters/TextFieldAdapter";
 import { TimePickerAdapter } from "../../ComponentAdapters/TimePickerAdapter";
 import { createNotificationType } from "./types";
 import { initialValues, notificationValidationSchema } from "./validation";
+import { radioButtonsValues } from "./constants";
+import { useMutation } from "@tanstack/react-query";
 
 const ModalForm = () => {
+  // const handleCreateNotification = useMutation((notificationData) => {
+  //   axios.post("https://jsonplaceholder.typicode.com/posts", notificationData);
+  // });
+
   const handleSubmit = (values: any) => {
     console.log(values);
   };
@@ -23,68 +29,70 @@ const ModalForm = () => {
       validateOnMount={true}
       validationSchema={notificationValidationSchema}
     >
-      {({ values, handleChange, setFieldValue, isValid,dirty, errors }) => (
+      {({ values, handleChange, setFieldValue, isValid, dirty, errors }) => (
         <>
           <div className={css.container}>
-            <Label> We will send notifications every : </Label>
+            <Label> We will send notifications every </Label>
             <div className={css.blockContainer}>
               <div className={css.interval}>
                 <TextFieldAdapter
                   isNumberField={true}
                   maxLength={3}
-                  name={createNotificationType.interval.value}
+                  name={"interval.value"}
                   sx={{ width: "60px" }}
                   variant="standard"
                 />
                 <RadioGroup
                   row
-                  name={createNotificationType.interval.type}
+                  name={"interval.type"}
                   onChange={handleChange}
                   value={values.interval.type}
                 >
                   <FormControlLabel
-                    checked={createNotificationType.interval.type === "days"}
+                    checked={values.interval.type === radioButtonsValues.days}
                     className={
-                      values.interval.type === "days"
+                      values.interval.type === radioButtonsValues.days
                         ? css.activeRadio
                         : css.radio
                     }
                     control={<Radio />}
-                    label="Day"
-                    value="days"
+                    label="Days"
+                    value={radioButtonsValues.days}
                   />
                   <FormControlLabel
-                    checked={values.interval.type === "weeks"}
+                    checked={values.type === radioButtonsValues.weeks}
                     className={
-                      values.interval.type === "weeks"
+                      values.type === radioButtonsValues.weeks
                         ? css.activeRadio
                         : css.radio
                     }
                     control={<Radio />}
-                    label="Week"
-                    value="weeks"
+                    label="Weeks"
+                    value={radioButtonsValues.weeks}
                   />
                   <FormControlLabel
-                    checked={values.interval.type === "months"}
+                    checked={values.type === radioButtonsValues.months}
                     className={
-                      values.interval.type === "months"
+                      values.type === radioButtonsValues.months
                         ? css.activeRadio
                         : css.radio
                     }
                     control={<Radio />}
-                    label="Month"
-                    value="months"
+                    label="Months"
+                    value={radioButtonsValues.months}
                   />
                 </RadioGroup>
               </div>
-              <Label> They will be sent at : </Label>
+            </div>
+            <div className={css.blockContainer}>
+              <Label> They will be sent at </Label>
               <TimePickerAdapter
                 name={createNotificationType.from}
                 setFieldValue={setFieldValue}
               />
             </div>
             <div className={css.blockContainer}>
-              <Label> Whit the text : </Label>
+              <Label> With the text</Label>
               <TextFieldAdapter
                 label={"Notification text"}
                 maxLength={300}

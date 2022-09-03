@@ -15,6 +15,8 @@ type Props = Options & BaseAdapterProps & TextFieldProps;
 
 type ComponentProps = Props & FieldProps;
 
+// TODO убрать ошибку из консоли,посмотреть,как прокидываются рефы
+
 const NumberFormatCustom = (props: any) => {
   const { name, maxLength, ...other } = props;
 
@@ -22,7 +24,6 @@ const NumberFormatCustom = (props: any) => {
     <NumberFormat
       {...other}
       allowNegative={false}
-      error={true}
       maxLength={maxLength}
       name={name}
       style={{ textAlign: "center" }}

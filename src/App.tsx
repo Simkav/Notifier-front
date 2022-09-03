@@ -14,6 +14,19 @@ const Authorization = React.lazy(() => import("./features/Authorization"));
 const UserConnections = React.lazy(() => import("./features/UserConnections"));
 
 const darkTheme = createTheme({
+  components: {
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          "&.Mui-expanded": {
+            backgroundColor: "#0d1f33",
+          },
+          backgroundColor: "#0a1929",
+        },
+      },
+    },
+  },
+
   palette: {
     mode: "dark",
   },

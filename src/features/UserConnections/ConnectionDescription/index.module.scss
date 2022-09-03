@@ -1,0 +1,27 @@
+@import "../../../index";
+
+.emphasise {
+  color: $primary-color;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.container {
+  max-width: 600px;
+  letter-spacing: 3px;
+  margin: 10px 0;
+  @include flex-column;
+  align-items: flex-start;
+  gap: 13px;
+  font-size: 14px;
+}
+
+.underlineText {
+  font-size: 10px;
+  margin-top: 5px;
+}
+
+a {
+  text-decoration: unset;
+  color: $primary-color;
+}
