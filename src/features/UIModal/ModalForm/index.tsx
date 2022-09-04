@@ -6,37 +6,52 @@ import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { Formik } from "formik";
 import { LoadingButton } from "@mui/lab";
 import { Maybe } from "yup/es/types";
+import { QueryObserverResult, useMutation } from "@tanstack/react-query";
 import { TextFieldAdapter } from "../../ComponentAdapters/TextFieldAdapter";
 import { TimePickerAdapter } from "../../ComponentAdapters/TimePickerAdapter";
 import { createNotificationType } from "./types";
+import { daysOnScreenType } from "../../Main/UICalendar/types";
 import { initialValues, notificationValidationSchema } from "./validation";
-import { radioButtonsValues } from "./constants";
+import { intervalTypeValues } from "./constants";
+import { setHours } from "date-fns";
 import { useAppSelector } from "../../../service/store";
-import { useMutation } from "@tanstack/react-query";
 
 type Props = {
   setOpenModal: (value: ((prevState: boolean) => boolean) | boolean) => void;
+  refetch: () => Promise<QueryObserverResult<any>>;
+  chosenDay: daysOnScreenType;
 };
 
-const ModalForm: FC<Props> = ({ setOpenModal }) => {
+const ModalForm: FC<Props> = ({ setOpenModal, refetch, chosenDay }) => {
   const userToken: Maybe<string> = useAppSelector(
     (state) => state.currentUserReducer.jwt
   );
+  const [day, month, year] = chosenDay?.id.split("/").map((el) => Number(el));
+  console.log(chosenDay);
+
+  const getStartDataOfNotification = (data: Date) => {
+    const hours = data.getHours();
+    const minutes = data.getMinutes();
+
+    return setHours(new Date(year, month, day), hours).setMinutes(minutes);
+  };
 
   const handleCreateNotification = useMutation(
     (notificationData: typeof notificationValidationSchema) => {
-      return axios.post(
-        String(process.env.REACT_APP_NOTE_URL),
-        {
-          ...notificationData,
-          from: new Date(notificationData.from).toUTCString(),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
+      return axios
+        .post(
+          String(process.env.REACT_APP_NOTE_URL),
+          {
+            ...notificationData,
+            from: getStartDataOfNotification(new Date(notificationData.from)),
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          }
+        )
+        .then((_) => refetch());
     }
   );
   const { mutate, isLoading } = handleCreateNotification;
@@ -54,7 +69,7 @@ const ModalForm: FC<Props> = ({ setOpenModal }) => {
       validateOnMount={true}
       validationSchema={notificationValidationSchema}
     >
-      {({ values, handleChange, setFieldValue, isValid, dirty, errors }) => (
+      {({ values, handleChange, setFieldValue, isValid, dirty }) => (
         <>
           <div className={css.container}>
             <Label> We will send notifications every </Label>
@@ -74,37 +89,37 @@ const ModalForm: FC<Props> = ({ setOpenModal }) => {
                   value={values.interval.type}
                 >
                   <FormControlLabel
-                    checked={values.interval.type === radioButtonsValues.days}
+                    checked={values.interval.type === intervalTypeValues.days}
                     className={
-                      values.interval.type === radioButtonsValues.days
+                      values.interval.type === intervalTypeValues.days
                         ? css.activeRadio
                         : css.radio
                     }
                     control={<Radio />}
                     label="Days"
-                    value={radioButtonsValues.days}
+                    value={intervalTypeValues.days}
                   />
                   <FormControlLabel
-                    checked={values.interval.type === radioButtonsValues.weeks}
+                    checked={values.interval.type === intervalTypeValues.weeks}
                     className={
-                      values.interval.type === radioButtonsValues.weeks
+                      values.interval.type === intervalTypeValues.weeks
                         ? css.activeRadio
                         : css.radio
                     }
                     control={<Radio />}
                     label="Weeks"
-                    value={radioButtonsValues.weeks}
+                    value={intervalTypeValues.weeks}
                   />
                   <FormControlLabel
-                    checked={values.interval.type === radioButtonsValues.months}
+                    checked={values.interval.type === intervalTypeValues.months}
                     className={
-                      values.interval.type === radioButtonsValues.months
+                      values.interval.type === intervalTypeValues.months
                         ? css.activeRadio
                         : css.radio
                     }
                     control={<Radio />}
                     label="Months"
-                    value={radioButtonsValues.months}
+                    value={intervalTypeValues.months}
                   />
                 </RadioGroup>
               </div>
