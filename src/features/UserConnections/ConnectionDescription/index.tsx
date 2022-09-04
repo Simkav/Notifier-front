@@ -54,8 +54,7 @@ const ConnectionDescription: FC<Props> = ({
             {descriptionFor !== connectionsVariation.Mail ? (
               <>
                 <p>
-                  Click on this icon and go to the app,where you will see
-                  our&nbsp;
+                  Firstly click on our&nbsp;
                   <a
                     className={css.emphasise}
                     href={connectionLinks[descriptionFor]}
@@ -64,26 +63,26 @@ const ConnectionDescription: FC<Props> = ({
                   >
                     {botName[descriptionFor]}
                   </a>
+                  &nbsp;and go to the app
                 </p>
                 <p>
                   Copy this phrase&nbsp;&nbsp;
                   <Tooltip TransitionComponent={Fade} title="Copy">
-                  <span
-                    className={css.emphasise}
-                    onClick={() => handleCopy(code)}
-                  >
-                    /register {code}
-                  </span>
-                    </Tooltip>
-                  &nbsp;&nbsp;and send it to our {botName[descriptionFor]}
+                    <span
+                      className={css.emphasise}
+                      onClick={() => handleCopy(code)}
+                    >
+                      /register {code}
+                    </span>
+                  </Tooltip>
+                  &nbsp;&nbsp;and send it to our Bot
                 </p>
                 <p>
-                  Your code have 1 hour limit, after that we will give you new
+                  This code have 1 hour limit, after that we will give you new
                   one
                 </p>
                 <p>
-                  If all goes well, our bot will connect your notifications with
-                  this account
+                  If all goes well, our Bot will be connected to that account
                   <br />
                   <span className={css.underlineText}>
                     (Else write us by&nbsp;

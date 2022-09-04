@@ -4,17 +4,20 @@ import ModalForm from "./ModalForm";
 import ModalTabs from "./ModalTabs";
 import React, { useState } from "react";
 import css from "./index.module.scss";
+import { QueryObserverResult } from "@tanstack/react-query";
+import {daysOnScreenType} from "../Main/UICalendar/types";
 import { format, parse } from "date-fns";
 import { modalTabs } from "./ModalTabs/constants";
 
 type ComponentProps = {
   isOpen: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
-  day?: any;
+  day?: daysOnScreenType;
+  refetch: () => Promise<QueryObserverResult<any>>;
 };
 
 export const UIModal = React.memo<ComponentProps>(
-  ({ isOpen, setOpenModal, day }) => {
+  ({ isOpen, setOpenModal, day, refetch }) => {
     const [modalType, setModalType] = useState<modalTabs>(modalTabs.create);
 
     if (!day) {
@@ -48,7 +51,12 @@ export const UIModal = React.memo<ComponentProps>(
             </h3>
             <ModalTabs modalType={modalType} setModalType={setModalType} />
             {modalType === modalTabs.create ? (
-              <ModalForm setOpenModal={setOpenModal} />
+              <ModalForm
+                chosenDay
+={day}
+                refetch={refetch}
+                setOpenModal={setOpenModal}
+              />
             ) : (
               <>All</>
             )}

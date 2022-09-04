@@ -6,7 +6,7 @@ export type ModalFormType = {
 
 }
 
-export enum radioButtonsValues {
+export enum intervalTypeValues {
     days = "days",
     weeks = "weeks",
     months = "months",

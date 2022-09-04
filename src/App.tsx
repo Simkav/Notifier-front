@@ -36,6 +36,12 @@ const darkTheme = createTheme({
 
   palette: {
     mode: "dark",
+    secondary: {
+      contrastText: "#000",
+      dark: "#492356",
+      light: "#ff7961",
+      main: "#692a68",
+    },
   },
 });
 

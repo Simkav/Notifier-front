@@ -1,0 +1,23 @@
+@import "../../../index";
+
+.dates {
+  border-top: 0;
+}
+
+.dateContainer,
+.header {
+  text-align: center;
+}
+
+.headerText {
+  color: rgb(255, 255, 255);
+  opacity: 80%;
+  font-size: 20px;
+}
+
+.container {
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 15px;
+}

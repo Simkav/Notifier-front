@@ -1,4 +1,4 @@
 src/service/slices
 src/features/Authorization/utils.tsx
+src/features/Main/UICalendar/constants.ts
 src/features/Authorization/Form/validation.ts
-src/features/UICalendar/constants.ts
