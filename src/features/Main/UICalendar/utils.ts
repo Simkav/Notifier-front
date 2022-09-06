@@ -20,10 +20,9 @@ export const showDays = (
 
   const prevMonthDaysCount = getDaysInMonth(new Date(year, month - 1));
 
-  const firstDayOfMonth = Number(format(new Date(year, month, 1), "i")) - 1;
+  const firstDayOfMonth = Number(format(new Date(year, month, 0), "i"));
 
-  // UUID для правильной анимации при смене месяца
-    // TODO пофиксить багу с выводом нотификаций(показываются на месяц позже)
+  // UUID для правильной анимации при смене месяца(в ущерб рендеру)
 
   const previousMonthDays = new Array(firstDayOfMonth)
     .fill(null)
@@ -40,18 +39,18 @@ export const showDays = (
     .map((_, i) => {
       const notificationsThisDay: NotificationsType[] = [];
 
-      const currentDayDate = new Date(year, month, i + 1);
+      const chosenDayDate = new Date(year, month, i + 1);
 
       notificationsData?.map((note) => {
         const convertedNoteDate = new Date(note.from);
 
-        if (isBefore(addDays(currentDayDate, 1), convertedNoteDate)) {
+        if (isBefore(addDays(chosenDayDate, 1), convertedNoteDate)) {
           return;
         }
 
         if (note.interval.type === intervalTypeValues.days) {
           if (
-            differenceInCalendarDays(currentDayDate, convertedNoteDate) %
+            differenceInCalendarDays(chosenDayDate, convertedNoteDate) %
               note.interval.value ===
             0
           ) {
@@ -60,30 +59,19 @@ export const showDays = (
         }
 
         if (note.interval.type === intervalTypeValues.weeks) {
-
-
-          if (note.interval.type === intervalTypeValues.weeks) {
-            const dayOfWeekOfNote = format(convertedNoteDate, "E");
-            const currentDayOfWeek = format(currentDayDate, "E");
-
-            console.log(
-              differenceInCalendarDays(currentDayDate, convertedNoteDate)
-            );
-            if (
-              // differenceInCalendarDays(currentDayDate, convertedNoteDate) %
-              //   (7 * note.interval.value) ===
-              // 0
-              dayOfWeekOfNote === currentDayOfWeek
-            ) {
-              notificationsThisDay.push(note);
-            }
+          if (
+            differenceInCalendarDays(chosenDayDate, convertedNoteDate) %
+              (7 * note.interval.value) ===
+            0
+          ) {
+            notificationsThisDay.push(note);
           }
         }
 
         if (note.interval.type === intervalTypeValues.months) {
           if (
-            currentDayDate.getDate() === convertedNoteDate.getDate() &&
-            Math.abs(convertedNoteDate.getMonth() - currentDayDate.getMonth()) %
+            chosenDayDate.getDate() === convertedNoteDate.getDate() &&
+            Math.abs(convertedNoteDate.getMonth() - chosenDayDate.getMonth()) %
               note.interval.value ===
               0
           ) {
@@ -98,7 +86,7 @@ export const showDays = (
           new Date()
         ),
         day: i + 1,
-        id: `${i + 1 + "/" + (month ) + "/" + year}`,
+        id: `${i + 1 + "/" + month + "/" + year}`,
         key: uuid(),
         notifications: notificationsThisDay,
       };

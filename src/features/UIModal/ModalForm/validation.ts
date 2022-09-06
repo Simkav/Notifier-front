@@ -12,7 +12,7 @@ export const notificationValidationSchema = Yup.object()
   })
   .defined();
 
-export type notificationsFromSchemaType = typeof notificationValidationSchema
+export type NotificationsFromSchemaType = typeof notificationValidationSchema;
 
 export const initialValues: typeof notificationValidationSchema = {
   from: "",

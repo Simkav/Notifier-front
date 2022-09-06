@@ -1,5 +1,5 @@
 import { FormikValues } from "formik";
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import { formEnum } from "../../../features/Authorization/types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -37,7 +37,7 @@ export const fetchUser = createAsyncThunk(
         };
       })
       .catch((error) => {
-        return rejectWithValue(error.response as any);
+        return rejectWithValue(error.response as AxiosResponse);
       });
   }
 );

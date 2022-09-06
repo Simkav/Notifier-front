@@ -1,4 +1,4 @@
-import { notificationsFromSchemaType } from "../../UIModal/ModalForm/validation";
+import { NotificationsFromSchemaType } from "../../UIModal/ModalForm/validation";
 
 
 
@@ -16,4 +16,4 @@ export type getNotificationsType = {
 };
 
 export type NotificationsType = getNotificationsType &
-  notificationsFromSchemaType;
+  NotificationsFromSchemaType;
