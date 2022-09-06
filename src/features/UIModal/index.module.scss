@@ -6,6 +6,9 @@
   border: 2px solid $active-border-color;
   border-radius: 3px;
   height: 700px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
   left: 50%;
   position: absolute;
   top: 400px;

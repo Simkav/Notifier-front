@@ -4,11 +4,11 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import HelpingText from "../HelpingText";
 import React, { FC, useCallback, useState } from "react";
 import UICalendar from "./UICalendar";
+import UIModal from "../UIModal";
 import axios, { AxiosError } from "axios";
 import css from "./index.module.scss";
 import getMonth from "date-fns/getMonth";
 import { Maybe } from "yup/es/types";
-import { UIModal } from "../UIModal";
 import { helpingText, monthEnum } from "./constants";
 import { useAppSelector } from "../../service/store";
 import { useQuery } from "@tanstack/react-query";
@@ -26,7 +26,7 @@ const Main: FC = () => {
 
   const notesUrl = new URL(process.env.REACT_APP_NOTE_URL!).href;
 
-  const { data, isLoading, error,refetch } = useQuery(
+  const { data, isLoading, error, refetch } = useQuery(
     ["notes", userToken],
     async () => {
       return await axios
@@ -93,7 +93,12 @@ const Main: FC = () => {
           setOpenModal={setOpenModal}
         />
       </div>
-      <UIModal day={day} isOpen={isOpenModal} refetch={refetch} setOpenModal={setOpenModal}  />
+      <UIModal
+        day={day}
+        isOpen={isOpenModal}
+        refetch={refetch}
+        setOpenModal={setOpenModal}
+      />
       <AlertAdapter
         footerMessage={"CAN'T GET NOTIFICATIONS FROM SERVER"}
         message={(error as AxiosError)?.message}

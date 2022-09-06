@@ -1,9 +1,9 @@
-@import 'src/index.scss';
-.container{
+@import "src/index.scss";
+.container {
   background-color: $background-color;
   max-width: 100vw;
   overflow-x: hidden;
+  overflow-y: auto;
   min-height: 100vh;
   padding-bottom: 30px;
 }
-

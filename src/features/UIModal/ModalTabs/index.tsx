@@ -10,16 +10,8 @@ type Props = {
 };
 
 const ModalTabs: FC<Props> = ({ modalType, setModalType }) => {
-  const handleChange = () => {};
-
   return (
-    <Tabs
-      centered
-      className={css.tabs}
-      onChange={handleChange}
-      textColor="primary"
-      value={modalType}
-    >
+    <Tabs centered className={css.tabs} textColor="primary" value={modalType}>
       <Tab
         label={modalTabs.create}
         onClick={() => setModalType(modalTabs.create)}

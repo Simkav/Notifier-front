@@ -1,5 +1,5 @@
 import Label from "../../FormLabel";
-import React, { FC } from "react";
+import React, { FC, memo } from "react";
 import axios from "axios";
 import css from "./index.module.scss";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
@@ -22,12 +22,11 @@ type Props = {
   chosenDay: daysOnScreenType;
 };
 
-const ModalForm: FC<Props> = ({ setOpenModal, refetch, chosenDay }) => {
+const ModalForm: FC<Props> = memo(({ setOpenModal, refetch, chosenDay }) => {
   const userToken: Maybe<string> = useAppSelector(
     (state) => state.currentUserReducer.jwt
   );
   const [day, month, year] = chosenDay?.id.split("/").map((el) => Number(el));
-  console.log(chosenDay);
 
   const getStartDataOfNotification = (data: Date) => {
     const hours = data.getHours();
@@ -86,6 +85,7 @@ const ModalForm: FC<Props> = ({ setOpenModal, refetch, chosenDay }) => {
                   row
                   name={"interval.type"}
                   onChange={handleChange}
+                  sx={{ width: "100%" }}
                   value={values.interval.type}
                 >
                   <FormControlLabel
@@ -157,6 +157,8 @@ const ModalForm: FC<Props> = ({ setOpenModal, refetch, chosenDay }) => {
       )}
     </Formik>
   );
-};
+});
+
+ModalForm.displayName = "ModalForm";
 
 export default ModalForm;
