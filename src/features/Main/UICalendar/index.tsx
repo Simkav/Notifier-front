@@ -1,11 +1,11 @@
-import React, { FC, useMemo, useState } from "react";
-import cn from "classnames";
+import DayInCalendar from "../DayInCalendar";
+import React, { FC, useMemo } from "react";
 import css from "./index.module.scss";
 import { Maybe } from "yup/es/types";
+import { NotificationsType, daysOnScreenType } from "./types";
 import { Skeleton } from "@mui/material";
-import { currentDateType } from "../Main/constants";
+import { currentDateType } from "../constants";
 import { daysOfWeekEnum } from "./constants";
-import { daysOnScreenType } from "./types";
 import { showDays } from "./utils";
 
 export type Props = {
@@ -14,6 +14,7 @@ export type Props = {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   setDay: React.Dispatch<React.SetStateAction<Maybe<any>>>;
   currentDate: currentDateType;
+  notificationData: NotificationsType[];
 };
 
 const UICalendar: FC<Props> = ({
@@ -22,18 +23,20 @@ const UICalendar: FC<Props> = ({
   isLoading,
   setDay,
   setOpenModal,
+  notificationData,
 }) => {
-  // const handleClick = (day: daysOnScreenType) => {
-  const handleClick = (day: any) => {
+
+  const handleClick = (day: daysOnScreenType) => {
     console.log(day);
     setOpenModal(true);
     setDay(day);
   };
 
   const { daysToShow, skeletonDays } = useMemo(
-    () => showDays({ ...currentDate }),
+    () => showDays({ ...currentDate }, notificationData),
     [currentDate]
   );
+
 
   return (
     <div>
@@ -44,24 +47,14 @@ const UICalendar: FC<Props> = ({
           </div>
         ))}
 
-        {!isLoading && daysToShow
-          ? daysToShow.map((el) => (
-              <div
-                key={el.key}
-                className={cn(
-                  css.dateContainer,
-                  el.currentMonthAndNotPast
-                    ? [css.thisMonth]
-                    : [css.notThisMonth]
-                )}
-                onClick={() => {
-                  el.currentMonthAndNotPast && isCurrentUser
-                    ? handleClick(el)
-                    : null;
-                }}
-              >
-                {el.day}
-              </div>
+        {(isCurrentUser ? !isLoading && daysToShow : true)
+          ? daysToShow.map((day) => (
+              <DayInCalendar
+                key={day.key}
+                day={day}
+                handleClick={handleClick}
+                isCurrentUser={isCurrentUser}
+              />
             ))
           : skeletonDays.map((el, indx) => (
               <Skeleton

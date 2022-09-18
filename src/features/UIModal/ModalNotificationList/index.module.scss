@@ -1,0 +1,30 @@
+@import "../../../index";
+
+.container {
+  width: 90%;
+  margin: 20px 0;
+}
+
+.notificationContainer {
+  @include flex-column;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  border: 2px solid $border-color;
+  border-radius: 5px;
+  margin: 10px 0;
+  padding: 10px;
+  gap: 7px;
+  width: 100%;
+}
+
+p {
+  font-size: 14px;
+  word-break: break-all;
+}
+
+span {
+  word-break: break-word;
+}
+.emphasise {
+  color: $primary-color;
+}

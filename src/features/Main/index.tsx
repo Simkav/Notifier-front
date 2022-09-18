@@ -2,13 +2,13 @@ import AlertAdapter from "../ComponentAdapters/AlertAdapter";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import HelpingText from "../HelpingText";
-import React, { FC, useCallback, useEffect, useState } from "react";
-import UICalendar from "../UICalendar";
+import React, { FC, useCallback, useState } from "react";
+import UICalendar from "./UICalendar";
+import UIModal from "../UIModal";
 import axios, { AxiosError } from "axios";
 import css from "./index.module.scss";
 import getMonth from "date-fns/getMonth";
 import { Maybe } from "yup/es/types";
-import { UIModal } from "../UIModal";
 import { helpingText, monthEnum } from "./constants";
 import { useAppSelector } from "../../service/store";
 import { useQuery } from "@tanstack/react-query";
@@ -26,25 +26,23 @@ const Main: FC = () => {
 
   const notesUrl = new URL(process.env.REACT_APP_NOTE_URL!).href;
 
-  const { isLoading, error,  } = useQuery(
+  const { data, isLoading, error, refetch } = useQuery(
     ["notes", userToken],
     async () => {
-      await axios
+      return await axios
         .get(notesUrl, {
           headers: {
             Authorization: `Bearer ${userToken}`,
           },
         })
-        .then((response) => response)
-        .catch((_) => setOpenAlert(true))
-        .finally(() => "return");
+        .then((response) => response.data)
+        .catch((_) => setOpenAlert(true));
     },
     {
       enabled: isCurrentUser,
       retry: false,
     }
   );
-
 
   const [currentYear, setCurrentYear] = useState<number>(
     new Date().getFullYear()
@@ -90,11 +88,17 @@ const Main: FC = () => {
           currentDate={{ month: currentMonth, year: currentYear }}
           isCurrentUser={isCurrentUser}
           isLoading={isLoading}
+          notificationData={data?.notes}
           setDay={setDay}
           setOpenModal={setOpenModal}
         />
       </div>
-      <UIModal day={day} isOpen={isOpenModal} setOpen={setOpenModal} />
+      <UIModal
+        day={day}
+        isOpen={isOpenModal}
+        refetch={refetch}
+        setOpenModal={setOpenModal}
+      />
       <AlertAdapter
         footerMessage={"CAN'T GET NOTIFICATIONS FROM SERVER"}
         message={(error as AxiosError)?.message}

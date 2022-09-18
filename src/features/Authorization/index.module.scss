@@ -5,10 +5,11 @@
 }
 
 .formWidth {
-  width: 600px;
+  width: 500px;
 }
 
 .container,
 .formWidth {
   @include flex-column;
+  gap: 30px;
 }
