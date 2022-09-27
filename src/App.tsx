@@ -1,10 +1,15 @@
 import React, { FC } from "react";
 import css from "./index.module.scss";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import {
+  Backdrop,
+  CircularProgress,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider, createTheme } from "@mui/material";
 import { setCurrentUser } from "./service/slices/currentUser/currentUser.slice";
 import { useAppDispatch } from "./service/store";
 
@@ -66,7 +71,19 @@ const App: FC = () => {
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <BrowserRouter>
               <Header />
-              <React.Suspense fallback={"Loading..."}>
+              <React.Suspense
+                fallback={
+                  <Backdrop
+                    open={true}
+                    sx={{
+                      color: "#fff",
+                      zIndex: (theme) => theme.zIndex.drawer + 1,
+                    }}
+                  >
+                    <CircularProgress color="inherit" />
+                  </Backdrop>
+                }
+              >
                 <Routes>
                   <Route element={<Main />} path="/main" />
                   <Route element={<Navigate replace to="/main" />} path="/" />

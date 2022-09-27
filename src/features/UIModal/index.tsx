@@ -8,7 +8,6 @@ import css from "./index.module.scss";
 import { QueryObserverResult } from "@tanstack/react-query";
 import { createDayName } from "./utils";
 import { daysOnScreenType } from "../Main/UICalendar/types";
-import { format, parse } from "date-fns";
 import { modalTabs } from "./ModalTabs/constants";
 
 type ComponentProps = {

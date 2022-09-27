@@ -28,3 +28,30 @@
   cursor: pointer;
   margin: 30px;
 }
+
+.popoverContainer {
+
+  background-color: $active-background-color;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  color: $primary-color;
+}
+
+.popoverItem {
+  width: 100%;
+  text-align: start;
+  padding: 10px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  &:hover {
+    background-color: $active-border-color;
+  }
+}
+
+.iconText {
+  margin-left : 10px;
+}
