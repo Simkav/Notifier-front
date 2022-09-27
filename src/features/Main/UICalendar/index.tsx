@@ -27,7 +27,6 @@ const UICalendar: FC<Props> = ({
 }) => {
 
   const handleClick = (day: daysOnScreenType) => {
-    console.log(day);
     setOpenModal(true);
     setDay(day);
   };
